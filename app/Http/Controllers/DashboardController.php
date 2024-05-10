@@ -23,8 +23,6 @@ class DashboardController extends Controller
     public function index(): Response
     {
         return Inertia::render('Dashboard', [
-            'total_websites' => Website::all()->count(),
-            'total_clients' => Client::all()->count(),
             'total_users' => User::all()->count(),
         ]);
     }

@@ -7,62 +7,6 @@
             <div class="d-flex">
                 <div class="w-100">
                     <div class="row">
-                        <div class="col-12 col-lg-3 col-md-6 col-sm-6" v-if="hasPermission('view_websites')">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col mt-0">
-                                            <h5 class="card-title">Websites</h5>
-                                        </div>
-
-                                        <div class="col-auto">
-                                            <div class="stat text-primary">
-                                                <i class="fa fa-list"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h1 class="mt-1 mb-3">
-                                        {{ $page.props.total_websites }}
-                                    </h1>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a
-                                        class="text-primary"
-                                        :href="`${$page.props.url}/websites/index`"
-                                        style="text-decoration: none"
-                                        >More</a
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-3 col-md-6 col-sm-6" v-if="hasPermission('view_clients')">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col mt-0">
-                                            <h5 class="card-title">Clients</h5>
-                                        </div>
-
-                                        <div class="col-auto">
-                                            <div class="stat text-primary">
-                                                <i class="fa fa-users"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h1 class="mt-1 mb-3">
-                                        {{ $page.props.total_clients }}
-                                    </h1>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a
-                                        class="text-primary"
-                                        :href="`${$page.props.url}/clients/index`"
-                                        style="text-decoration: none"
-                                        >More</a
-                                    >
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-12 col-lg-3 col-md-6 col-sm-6" v-if="hasPermission('view_users')">
                             <div class="card">
                                 <div class="card-body">
