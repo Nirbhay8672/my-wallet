@@ -10,7 +10,7 @@
                 alt="logo"
                 style="height: 30px; width: auto"
             />
-            <strong class="align-middle ms-3 fs-5 text-dark">P M S</strong>
+            <strong class="align-middle ms-3 fs-5 text-dark">My Wallet</strong>
         </a>
         <a class="sidebar-toggle js-sidebar-toggle">
             <i class="hamburger align-self-center"></i>
