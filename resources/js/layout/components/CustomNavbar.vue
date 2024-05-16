@@ -1,35 +1,28 @@
 <template>
-    <nav class="navbar navbar-expand navbar-light navbar-bg fixed-top">
-        <a
-            class="d-none d-sm-block"
-            :href="`${$page.props.url}/home`"
-            style="text-decoration: none;width:260px;"
-        >
-            <img
-                :src="`${$page.props.url}/images/favicon.png`"
-                alt="logo"
-                style="height: 30px; width: auto"
-            />
-            <strong class="align-middle ms-3 fs-5 text-dark">My Wallet</strong>
-        </a>
-        <a class="sidebar-toggle js-sidebar-toggle">
-            <i class="hamburger align-self-center"></i>
-        </a>
-        <div class="navbar-collapse collapse">
-            <ul class="navbar-nav navbar-align">
-                <li class="nav-item dropdown">
-                    <a
-                        class="nav-icon dropdown-toggle d-inline-block d-sm-none"
-                        href="#"
-                        data-bs-toggle="dropdown"
-                    >
-                        <i class="align-middle" data-feather="settings"></i>
-                    </a>
+    <header id="header" class="header fixed-top d-flex align-items-center">
+        <div class="d-flex align-items-center justify-content-between">
+            <a :href="`${$page.props.url}/home`" class="logo d-flex align-items-center">
+                <img
+                    :src="`${$page.props.url}/images/favicon.png`"
+                    alt="logo"
+                />
+                <span class="d-none d-lg-block ms-2">My Wallet</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div>
 
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+                <li class="nav-item d-block d-lg-none">
+                    <a class="nav-link nav-icon search-bar-toggle" href="#">
+                        <i class="bi bi-search"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item pe-3">
                     <a
-                        class="nav-link d-none d-sm-inline-block"
-                        href="#"
-                        data-bs-toggle="dropdown"
+                        class=" nav-profile d-flex align-items-center pe-0"
+                        :href="`${$page.props.url}/users/profile`"
                     >
                         <img
                             :src="
@@ -37,31 +30,21 @@
                                     ? $page.props.auth.user.profile_path
                                     : '/images/user.png'
                             "
-                            class="avatar img-fluid rounded me-1"
-                            alt="profile image"
+                            alt="Profile"
+                            class="rounded-circle"
                         />
-                        <span class="text-dark ms-2">{{
-                            $page.props.auth.user.username
-                        }}</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end mt-2">
-                            <a
-                                :href="`${$page.props.url}/users/profile`"
-                                class="dropdown-item"
-                            >
-                            <i
-                                class="align-middle me-1"
-                                data-feather="user"
-                            ></i>
-                            Profile</a
-                        >
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/logout-auth">Log out</a>
-                    </div>
+                        <span class="d-none d-md-block ps-2"
+                            >{{ $page.props.auth.user.name }}</span
+                        > </a
+                    >
+                </li>
+
+                <li class="nav-item pe-3">
+                    <a class="dropdown-item" href="/logout-auth">Log out</a>
                 </li>
             </ul>
-        </div>
-    </nav>
+        </nav>
+    </header>
 </template>
 
 <script setup></script>
