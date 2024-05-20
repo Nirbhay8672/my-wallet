@@ -1,44 +1,42 @@
 <template>
     <inertia-head title="Dashboard" />
     <main-page>
-        <h5>Dashboard</h5>
+        <div class="pagetitle">
+            <h1>Dashboard</h1>
+        </div>
 
-        <div class="row mt-4">
-            <div class="d-flex">
-                <div class="w-100">
+        <section class="section dashboard">
+            <div class="row">
+                <div class="col-lg-8">
                     <div class="row">
-                        <div class="col-12 col-lg-3 col-md-6 col-sm-6" v-if="hasPermission('view_users')">
-                            <div class="card">
+                        <div class="col-xxl-6 col-md-6">
+                            <a
+                                class="card info-card sales-card"
+                                v-if="hasPermission('view_users')"
+                                :href="`${$page.props.url}/users/index`"
+                            >
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="col mt-0">
-                                            <h5 class="card-title">Users</h5>
-                                        </div>
+                                    <h5 class="card-title">
+                                        Users
+                                    </h5>
 
-                                        <div class="col-auto">
-                                            <div class="stat text-primary">
-                                                <i class="fa fa-users"></i>
-                                            </div>
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                                        >
+                                            <i class="bi bi-people-fill"></i>
+                                        </div>
+                                        <div class="ps-3">
+                                            <h6>{{ $page.props.total_users }}</h6>
                                         </div>
                                     </div>
-                                    <h1 class="mt-1 mb-3">
-                                        {{ $page.props.total_users }}
-                                    </h1>
                                 </div>
-                                <div class="card-footer text-center">
-                                    <a
-                                        class="text-primary"
-                                        :href="`${$page.props.url}/users/index`"
-                                        style="text-decoration: none"
-                                        >More</a
-                                    >
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </main-page>
 </template>
 
@@ -57,5 +55,4 @@ function hasPermission(permission_name) {
 
     return permission_obj ? true : false;
 }
-
 </script>

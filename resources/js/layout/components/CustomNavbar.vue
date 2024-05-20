@@ -40,7 +40,7 @@
                 </li>
 
                 <li class="nav-item pe-3">
-                    <a class="dropdown-item" href="/logout-auth">Log out</a>
+                    <a class="dropdown-item" href="/logout-auth"><i class="bi bi-box-arrow-right"></i></a>
                 </li>
             </ul>
         </nav>

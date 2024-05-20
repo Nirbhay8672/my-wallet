@@ -8,7 +8,7 @@ import "animate.css";
 
 createInertiaApp({
     id: "app",
-    title: (title) => (title ? `${title} | PMS` : "PMS"),
+    title: (title) => (title ? `${title} | My Wallet` : "My Wallet"),
     resolve: (name) => {
         const pages = import.meta.glob("./pages/**/*.vue", { eager: true });
         let page = pages[`./pages/${name}.vue`];

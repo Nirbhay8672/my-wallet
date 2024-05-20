@@ -1,17 +1,12 @@
 <template>
-    <footer class="footer">
-        <div class="container-fluid">
-            <div class="row text-muted">
-                <div class="col-6 text-start">
-                    <p class="mb-0">
-                        <span class="text-muted"><strong>P M S</strong></span>
-                        &copy;
-                    </p>
-                </div>
-                <div class="col-6 text-end">
-                    <span class="text-primay">Support</span>
-                </div>
-            </div>
+    <footer id="footer" class="footer">
+        <div class="copyright">
+            &copy; Copyright <strong><span>My Wallet</span></strong
+            >. All Rights Reserved
+        </div>
+        <div class="credits">
+            Developed by Nirbhay Hathaliya
         </div>
     </footer>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 </template>
