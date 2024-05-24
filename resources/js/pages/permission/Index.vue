@@ -30,9 +30,9 @@
                     >
                         <div class="overflow dark" id="preload">
                             <div class="circle-line">
-                                <div class="circle-red"><b>P</b></div>
-                                <div class="circle-blue"><b>M</b></div>
-                                <div class="circle-red"><b>S</b></div>
+                                <div class="circle-2"><img class="loader-icon-image" :src="`${$page.props.url}/images/coin.png`" alt="coin"></div>
+                                <div class="circle-1"><img class="loader-icon-image" :src="`${$page.props.url}/images/coin.png`" alt="coin"></div>
+                                <div class="circle-2"><img class="loader-icon-image" :src="`${$page.props.url}/images/coin.png`" alt="coin"></div>
                             </div>
                         </div>
                     </div>

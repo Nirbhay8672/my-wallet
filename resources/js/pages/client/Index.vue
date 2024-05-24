@@ -31,9 +31,9 @@
                     >
                         <div class="overflow dark" id="preload">
                             <div class="circle-line">
-                                <div class="circle-red"><b>P</b></div>
-                                <div class="circle-blue"><b>M</b></div>
-                                <div class="circle-red"><b>S</b></div>
+                                <div class="circle-2"><b>P</b></div>
+                                <div class="circle-1"><b>M</b></div>
+                                <div class="circle-2"><b>S</b></div>
                             </div>
                         </div>
                     </div>

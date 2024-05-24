@@ -31,7 +31,7 @@
     @vite('resources/js/app.js')
 
     <script src="{{ asset('/js/bootstrap-bundle.js') }}"></script>
-    <script src="{{ asset('/js/app.js') }}"></script>
+    <script src="{{ asset('/js/main.js') }}"></script>
 </body>
 
 </html>

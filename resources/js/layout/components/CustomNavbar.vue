@@ -8,7 +8,7 @@
                 />
                 <span class="d-none d-lg-block ms-2">My Wallet</span>
             </a>
-            <i class="bi bi-list toggle-sidebar-btn"></i>
+            <i class="bi bi-list toggle-sidebar-btn" @click="toggleSideBar()"></i>
         </div>
 
         <nav class="header-nav ms-auto">
@@ -47,4 +47,15 @@
     </header>
 </template>
 
-<script setup></script>
+<script setup>
+// import { toastAlert } from '../../helpers/alert';
+
+// document.addEventListener('contextmenu', function(event) {
+//     event.preventDefault();
+//     toastAlert({
+//         title: 'Sorry you cant open context menu.',
+//         icon: "error",
+//     });
+// });
+
+</script>
