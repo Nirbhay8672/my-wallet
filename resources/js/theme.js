@@ -1,4 +1,4 @@
-(function () {
+const initThemeScript = function () {
     "use strict";
 
     /**
@@ -230,4 +230,8 @@
             ],
         });
     });
-})();
+}
+
+export {
+    initThemeScript,
+}

@@ -16,9 +16,7 @@
                                 :href="`${$page.props.url}/users/index`"
                             >
                                 <div class="card-body">
-                                    <h5 class="card-title">
-                                        Users
-                                    </h5>
+                                    <h5 class="card-title">Users</h5>
 
                                     <div class="d-flex align-items-center">
                                         <div
@@ -27,7 +25,9 @@
                                             <i class="bi bi-people-fill"></i>
                                         </div>
                                         <div class="ps-3">
-                                            <h6>{{ $page.props.total_users }}</h6>
+                                            <h6>
+                                                {{ $page.props.total_users }}
+                                            </h6>
                                         </div>
                                     </div>
                                 </div>
@@ -37,15 +37,37 @@
                 </div>
             </div>
         </section>
+
+        <button id="playButton">Play Music</button>
+        <audio id="audioPlayer" :src="`${$page.props.url}/voice/welcome.mp3`"></audio>
     </main-page>
 </template>
 
 <script setup>
+import { nextTick, onMounted } from 'vue';
+
 const props = defineProps({
     auth: {
         type: Object,
         required: true,
     },
+});
+
+onMounted(() => {
+    const playButton = document.getElementById('playButton');
+    const audioPlayer = document.getElementById('audioPlayer');
+
+    playButton.addEventListener('click', function() {
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+        } else {
+            audioPlayer.pause();
+        }
+    });
+
+    nextTick(() => {
+        playButton.click();
+    })
 });
 
 function hasPermission(permission_name) {

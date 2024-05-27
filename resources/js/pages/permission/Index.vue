@@ -1,22 +1,20 @@
 <template>
     <inertia-head title="Role Permissions" />
     <main-page>
-        <div class="container-fluid p-0 mb-3">
-            <div class="row mb-2 gy-3">
-                <div class="col-sm-6">
-                    <h5 class="d-inline align-middle">Role Permission</h5>
+        <div class="row justify-content-between gy-3 mb-3">
+            <div class="col-md-auto me-auto">
+                <div class="pagetitle">
+                    <h1>Role Permission</h1>
                 </div>
-                <div class="col-sm-6" v-if="!allow_update">
-                    <div class="float-sm-end gy-3">
-                        <button
-                            class="btn btn-primary btn-sm ms-sm-3 ms-md-3 ms-lg-3 mt-sm-2 mt-3 mt-md-0 mt-lg-0 mt-sm-0"
-                            @click="allowUpdate"
-                            v-if="hasPermission('update_permission')"
-                        >
-                            <span class="ms-2">Update Permissions</span>
-                        </button>
-                    </div>
-                </div>
+            </div>
+            <div class="col-md-auto ms-auto" v-if="!allow_update">
+                <button
+                    class="btn btn-primary btn-sm"
+                    @click="allowUpdate"
+                    v-if="hasPermission('update_permission')"
+                >
+                    <span class="ms-2">Update Permissions</span>
+                </button>
             </div>
         </div>
 
@@ -72,21 +70,7 @@
                                                 :key="index"
                                             >
                                                 <template v-if="allow_update">
-                                                    <div class="text-center" v-if="role.id == 1">
-                                                        <i
-                                                            class="fa fa-check text-success"
-                                                        ></i>
-                                                        <input
-                                                            class="form-check-input permission-checkbox d-none"
-                                                            type="checkbox"
-                                                            value=""
-                                                            :id="`role_${role.id}_permission_${permission.id}`"
-                                                            :checked="
-                                                                role.has_permission
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="form-check d-flex justify-content-center" v-else>
+                                                    <div class="form-check d-flex justify-content-center">
                                                         <input
                                                             class="form-check-input permission-checkbox"
                                                             type="checkbox"
@@ -104,11 +88,11 @@
                                                             v-if="
                                                                 role.has_permission
                                                             "
-                                                            class="fa fa-check text-success"
+                                                            class="bi bi-shield-fill-check fs-5 text-success"
                                                         ></i>
                                                         <i
                                                             v-else
-                                                            class="fa fa-times text-danger"
+                                                            class="bi bi-shield-fill-x fs-5 text-danger"
                                                         ></i>
                                                     </div>
                                                 </template>

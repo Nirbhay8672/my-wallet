@@ -1,17 +1,22 @@
 <template>
     <inertia-head title="Users" />
     <main-page>
-        <div class="pagetitle">
-            <h1>Users</h1>
-
-            <button
-                class="btn btn-primary btn-sm ms-sm-3 ms-md-3 ms-lg-3 mt-sm-2 mt-3 mt-md-0 mt-lg-0 mt-sm-0"
-                @click="openForm()"
-                v-if="hasPermission('add_user')"
-            >
-                <i class="fa fa-plus-circle"></i>
-                <span class="ms-2">Add User</span>
-            </button>
+        <div class="row justify-content-between gy-3 mb-3">
+            <div class="col-md-auto me-auto">
+                <div class="pagetitle">
+                    <h1>Users</h1>
+                </div>
+            </div>
+            <div class="col-md-auto ms-auto">
+                <button
+                    class="btn btn-primary btn-sm"
+                    @click="openForm()"
+                    v-if="hasPermission('add_user')"
+                >
+                    <i class="bi bi-plus"></i>
+                    <span class="ms-2">Add User</span>
+                </button>
+            </div>
         </div>
 
         <section class="section">
@@ -50,48 +55,36 @@
                             </div>
                         </div>
                         <div class="card-body p-4" v-else>
-                            <div
-                                class="row mt-2 justify-content-between gy-3 mb-3"
-                            >
+                            <div class="row justify-content-between gy-3 mb-3">
                                 <div class="col-md-auto me-auto">
-                                    <div class="dt-length">
-                                        <select
-                                            class="form-select form-control"
-                                            id="per_page"
-                                            v-model="fields.per_page"
-                                            @change="changeMainFilter()"
-                                        >
-                                            <option value="5">5</option>
-                                            <option value="10">10</option>
-                                            <option value="15">15</option>
-                                            <option value="20">20</option>
-                                        </select>
-                                    </div>
+                                    <select
+                                        class="form-select form-control"
+                                        id="per_page"
+                                        v-model="fields.per_page"
+                                        @change="changeMainFilter()"
+                                    >
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                    </select>
                                 </div>
                                 <div class="col-md-auto ms-auto">
-                                    <div class="dt-search">
-                                        <input
-                                            type="text"
-                                            id="search_input"
-                                            placeholder="Search..."
-                                            class="form-control"
-                                            v-model="fields.search"
-                                            @keyup="changeMainFilter()"
-                                        />
-                                    </div>
+                                    <input
+                                        type="text"
+                                        id="search_input"
+                                        placeholder="Search..."
+                                        class="form-control"
+                                        v-model="fields.search"
+                                        @keyup="changeMainFilter()"
+                                    />
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="table-responsive">
-                                    <table
-                                        class="table"
-                                        style="
-                                            border-collapse: separate;
-                                            border-spacing: 0 10px;
-                                        "
-                                    >
+                                    <table class="table table-hover">
                                         <thead>
-                                            <tr class="custom-table-heading">
+                                            <tr>
                                                 <th>Sr No.</th>
                                                 <th>Profile</th>
                                                 <th>Username</th>
@@ -227,7 +220,7 @@
                                             >
                                                 <span class="page-link"
                                                     ><i
-                                                        class="fa fa-angle-double-left"
+                                                        class="bi bi-chevron-double-left"
                                                     ></i
                                                 ></span>
                                             </li>
@@ -260,7 +253,7 @@
                                             >
                                                 <span class="page-link"
                                                     ><i
-                                                        class="fa fa-angle-double-right"
+                                                        class="bi bi-chevron-double-right"
                                                     ></i
                                                 ></span>
                                             </li>
