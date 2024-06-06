@@ -169,14 +169,11 @@
                                                         </button>
                                                         <button
                                                             class="btn btn-outline-danger btn-sm ms-3"
+                                                            :class="user.id == 1 ? 'd-none' : ''"
                                                             @click="
                                                                 deleteUser(user)
                                                             "
-                                                            v-if="
-                                                                hasPermission(
-                                                                    'delete_user'
-                                                                )
-                                                            "
+                                                            v-if="hasPermission('delete_user')"
                                                         >
                                                             <i
                                                                 class="bi bi-trash-fill"

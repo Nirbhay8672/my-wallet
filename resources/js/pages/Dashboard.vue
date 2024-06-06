@@ -4,7 +4,6 @@
         <div class="pagetitle">
             <h1>Dashboard</h1>
         </div>
-
         <section class="section dashboard">
             <div class="row">
                 <div class="col-lg-8">
@@ -36,38 +35,21 @@
                     </div>
                 </div>
             </div>
-        </section>
 
-        <button id="playButton">Play Music</button>
-        <audio id="audioPlayer" :src="`${$page.props.url}/voice/welcome.mp3`"></audio>
+            <audio ref="audioPlayer" autoplay>
+                <source :src="`${$page.props.url}/voice/welcome.mp3`" type="audio/mp3">
+            </audio>
+        </section>
     </main-page>
 </template>
 
 <script setup>
-import { nextTick, onMounted } from 'vue';
 
 const props = defineProps({
     auth: {
         type: Object,
         required: true,
     },
-});
-
-onMounted(() => {
-    const playButton = document.getElementById('playButton');
-    const audioPlayer = document.getElementById('audioPlayer');
-
-    playButton.addEventListener('click', function() {
-        if (audioPlayer.paused) {
-            audioPlayer.play();
-        } else {
-            audioPlayer.pause();
-        }
-    });
-
-    nextTick(() => {
-        playButton.click();
-    })
 });
 
 function hasPermission(permission_name) {
