@@ -5,80 +5,78 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="PMS System">
-    <meta name="author" content="PMS">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <meta name="url" content="{{ url('/') }}" />
+    <meta name="description" content="Otech System">
+    <meta name="author" content="Otech">
 
     <title>Login | My Wallet</title>
 
     <link rel="shortcut icon" href="{{ asset('/images/favicon.png') }}" />
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-    <link href="{{ asset('/css/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/bootstrap-icons/bootstrap-icons.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/custom.css') }}" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('/font/cssa882.css') }}?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+    <link id="pagestyle" href="{{ asset('/css/app.css') }}?v=3.0.6" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-    <main class="d-flex w-100 login-page-container">
-        <div class="container d-flex flex-column">
-            <div class="row vh-100">
-                <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 mx-auto d-table h-100">
-                    <div class="d-table-cell align-middle">
-                        <div class="text-center mt-4">
-                            <h1 class="h2 text-white">PMS Login</h1>
-                            <p class="lead text-white">Sign in to your account to continue</p>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="m-sm-3">
-                                    <form method="POST" action="{{ route('login') }}">
-                                        @csrf
-                                        <div class="mb-3">
-                                            <label class="form-label required" for="email">Email</label>
-                                            <input id="email" type="email"
-                                                class="form-control @error('email') is-invalid @enderror" name="email"
-                                                value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                            @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label required" for="password">Password</label>
-                                            <input id="password" type="password"
-                                                class="form-control @error('password') is-invalid @enderror"
-                                                name="password" required autocomplete="current-password">
-
-                                            @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-check align-items-center">
-                                            <input class="form-check-input" type="checkbox" id="show_password"
-                                                onclick="showHidePassword()" />
-                                            <label class="form-check-label text-small" for="show_password">Show
-                                                Password</label>
-                                        </div>
-                                        <div class="d-grid gap-2 mt-3">
-                                            <button type="submit" class="btn btn-primary">
-                                                {{ __('Login') }}
-                                            </button>
-                                        </div>
-                                    </form>
+    <main class="main-content mt-0 ps">
+        <div class="page-header align-items-start min-vh-100"
+            style="background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1950&amp;q=80');">
+            <span class="mask bg-gradient-dark opacity-6"></span>
+            <div class="container my-auto">
+                <div class="row">
+                    <div class="col-lg-4 col-md-8 col-12 mx-auto">
+                        <div class="card z-index-0 fadeIn3 fadeInBottom">
+                            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 sm-p-2">
+                                <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1 text-center">
+                                    <img src="{{ asset('/images/favicon.png') }}" style="height: 50px;width:auto;">
+                                    <h4 class="text-white font-weight-bolder text-center mt-2 mb-0" style="letter-spacing:2px;">My Wallet</h4>
+                                    <small class="text-white text-center">Sign in to your account to continue</small>
                                 </div>
+                            </div>
+                            <div class="card-body">
+                                <form method="POST" action="{{ route('login') }}" role="form" class="text-start">
+                                @csrf
+                                    <div class="input-group input-group-outline my-3">
+                                        <input
+                                            id="email"
+                                            type="text"
+                                            class="form-control @error('email') is-invalid @enderror"
+                                            name="email"
+                                            placeholder="Enter email address"
+                                            value="{{ old('email') }}"
+                                            autocomplete="email"
+                                            autofocus
+                                        >
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <input
+                                            id="password"
+                                            type="password"
+                                            class="form-control @error('password') is-invalid @enderror"
+                                            name="password"
+                                            placeholder="Enter password"
+                                            autocomplete="current-password"
+                                        >
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                    <div class="form-check" style="padding-left: 0px !important;">
+                                        <input class="form-check-input" type="checkbox" id="show_password"
+                                            onclick="showHidePassword()" />
+                                        <label class="form-check-label text-small" for="show_password">Show
+                                            Password</label>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">{{ __('Login') }}</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -87,16 +85,14 @@
         </div>
     </main>
     <script>
-
-    function showHidePassword() {
-        var x = document.getElementById("password");
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
+        function showHidePassword() {
+            var x = document.getElementById("password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
         }
-    }
-    
     </script>
 </body>
 

@@ -1,50 +1,37 @@
 <template>
     <inertia-head title="Dashboard" />
     <main-page>
-        <div class="pagetitle">
-            <h1>Dashboard</h1>
-        </div>
-        <section class="section dashboard">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="row">
-                        <div class="col-xxl-6 col-md-6">
-                            <a
-                                class="card info-card sales-card"
-                                v-if="hasPermission('view_users')"
-                                :href="`${$page.props.url}/users/index`"
-                            >
-                                <div class="card-body">
-                                    <h5 class="card-title">Users</h5>
-
-                                    <div class="d-flex align-items-center">
-                                        <div
-                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                                        >
-                                            <i class="bi bi-people-fill"></i>
-                                        </div>
-                                        <div class="ps-3">
-                                            <h6>
-                                                {{ $page.props.total_users }}
-                                            </h6>
-                                        </div>
-                                    </div>
+        <div class="row">
+            <div class="col-lg-12 position-relative z-index-2">
+                <audio ref="audioPlayer" autoplay>
+                    <source :src="`${$page.props.url}/voice/welcome.mp3`" type="audio/mp3">
+                </audio>
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6 mt-sm-0 mt-4" v-if="hasPermission('view_users')">
+                        <div class="card mb-2">
+                            <div class="card-header p-3 pt-2">
+                                <div
+                                    class="icon icon-lg icon-shape bg-gradient-primary shadow-primary shadow text-center border-radius-xl mt-n4 position-absolute">
+                                    <i class="material-icons opacity-10">leaderboard</i>
                                 </div>
-                            </a>
+                                <div class="text-end pt-1">
+                                    <p class="text-sm mb-0 text-capitalize">Users</p>
+                                    <h4 class="mb-0">{{ $page.props.total_users }}</h4>
+                                </div>
+                            </div>
+                            <hr class="dark horizontal my-0">
+                            <div class="card-footer p-3 text-center">
+                                <a :href="`${$page.props.url}/users/index`" class="btn btn-outline-primary btn-sm mb-0">View</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <audio ref="audioPlayer" autoplay>
-                <source :src="`${$page.props.url}/voice/welcome.mp3`" type="audio/mp3">
-            </audio>
-        </section>
+        </div>
     </main-page>
 </template>
 
 <script setup>
-
 const props = defineProps({
     auth: {
         type: Object,
@@ -59,4 +46,5 @@ function hasPermission(permission_name) {
 
     return permission_obj ? true : false;
 }
+
 </script>

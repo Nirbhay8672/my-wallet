@@ -1,14 +1,14 @@
 <template>
-    <custom-navbar />
-    <custom-sidebar :auth="$page.props.auth"></custom-sidebar>
-    <main id="main" class="main">
+    <custom-navbar></custom-navbar>
+    <div class="container-fluid py-4">
+        <!-- dynamic content -->
         <slot></slot>
-    </main>
-    <custom-footer />
+        <!-- footer -->
+        <custom-footer></custom-footer>
+    </div>
 </template>
 
 <script setup>
 import CustomNavbar from "./components/CustomNavbar.vue";
-import CustomSidebar from "./components/CustomSidebar.vue";
 import CustomFooter from "./components/CustomFooter.vue";
 </script>

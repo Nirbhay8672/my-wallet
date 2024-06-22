@@ -4,7 +4,7 @@
             <span>Update Profile</span>
         </template>
 
-        <form>
+        <form id="profile_form" class="form">
             <div class="row">
                 <div class="text-center col-lg-12">
                     <div class="card-img-actions d-inline-block">
@@ -20,7 +20,7 @@
                                 :src="
                                     fields.profile_path
                                         ? fields.profile_path
-                                        : '/images/user.png'
+                                        : '/images/profile.png'
                                 "
                                 class="rounded"
                                 style="width: 120px; height: 120px"
@@ -70,9 +70,8 @@
                         label="Username"
                         label-class="required"
                         type="text"
-                        id="username"
-                        field="username"
-                        placeholder="Enter username"
+                        id="name"
+                        field="name"
                         :errors="formValidation.errors"
                         autocomplete="off"
                     ></Field>
@@ -85,7 +84,6 @@
                         type="text"
                         id="email"
                         field="email"
-                        placeholder="Enter email"
                         :errors="formValidation.errors"
                         autocomplete="off"
                     ></Field>
@@ -98,7 +96,6 @@
                         type="text"
                         id="first_name"
                         field="first_name"
-                        placeholder="Enter first name"
                         :errors="formValidation.errors"
                         autocomplete="off"
                     ></Field>
@@ -111,7 +108,6 @@
                         type="text"
                         id="last_name"
                         field="last_name"
-                        placeholder="Enter last name"
                         :errors="formValidation.errors"
                         autocomplete="off"
                     ></Field>
@@ -123,7 +119,6 @@
                         type="password"
                         id="password"
                         field="password"
-                        placeholder="Enter password"
                         autocomplete="off"
                         :errors="formValidation.errors"
                     ></Field>
@@ -136,7 +131,6 @@
                         id="confirm_password"
                         field="confirm_password"
                         autocomplete="off"
-                        placeholder="Enter confirm password"
                         :errors="formValidation.errors"
                     ></Field>
                 </div>
@@ -145,7 +139,7 @@
 
         <template #modal_footer>
             <button
-                class="btn btn-success btn-sm"
+                class="btn bg-gradient-primary btn-sm"
                 type="button"
                 @click="handleSubmit"
             >

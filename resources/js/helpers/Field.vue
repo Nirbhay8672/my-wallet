@@ -1,31 +1,29 @@
 <template>
-    <slot name="label" v-if="!noLabel">
-        <label :for="id" class="form-label" :class="labelClass">
-            {{ label }}
-        </label>
-    </slot>
-
     <slot :hasError="hasError" :errorMessage="errorMessage">
-        <slot name="input" :hasError="hasError">
-            <input
-                v-if="!noInput"
-                v-bind="$attrs"
-                v-bind:type="$attrs['type'] || 'text'"
-                class="form-control form-control-solid"
-                :value="modelValue"
-                v-bind:id="$attrs['id'] || id"
-                @input="$emit('update:modelValue', $event.target.value)"
-                :class="{
-                    'is-invalid': hasError,
-                }"
-            />
-        </slot>
-
-        <slot name="error" :errorMessage="errorMessage" :hasError="hasError">
-            <div class="invalid-feedback" v-if="hasError">
-                <span>{{ errors[field][0] }}</span>
-            </div>
-        </slot>
+        <div
+            class="input-group input-group-outline my-3"
+            :class="{
+                'is-invalid': hasError,
+                'is-filled': modelValue || hasError,
+            }">
+            <slot name="label" v-if="!noLabel">
+                <label class="form-label" :for="$attrs['id'] || id" :class="labelClass">{{ label }}</label>
+            </slot>
+            <slot name="input" :hasError="hasError">
+                <input
+                    v-if="!noInput"
+                    v-bind="$attrs"
+                    v-bind:type="$attrs['type'] || 'text'"
+                    class="form-control"
+                    :value="modelValue"
+                    v-bind:id="$attrs['id'] || id"
+                    @input="$emit('update:modelValue', $event.target.value)"
+                />
+            </slot>
+            <slot name="error" :errorMessage="errorMessage" :hasError="hasError" v-if="hasError">
+                <small style="font-size: 12px;">{{ errors[field][0] }}</small>
+            </slot>
+        </div>
     </slot>
 </template>
 
