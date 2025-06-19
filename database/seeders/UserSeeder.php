@@ -37,6 +37,12 @@ class UserSeeder extends Seeder
             // permissions
             ['display_name' => 'View Permissions', 'name' => 'view_permissions', 'category' => 'Permission' , 'guard_name' => 'web'],
             ['display_name' => 'Update Permissions', 'name' => 'update_permission', 'category' => 'Permission' , 'guard_name' => 'web'],
+
+            // sources
+            ['display_name' => 'View Sources', 'name' => 'view_sources', 'category' => 'Source' , 'guard_name' => 'web'],
+            ['display_name' => 'Add Source', 'name' => 'add_source', 'category' => 'Source' , 'guard_name' => 'web'],
+            ['display_name' => 'Update Source', 'name' => 'update_source', 'category' => 'Source' , 'guard_name' => 'web'],
+            ['display_name' => 'Delete Source', 'name' => 'delete_source', 'category' => 'Source' , 'guard_name' => 'web'],
         ];
 
         DB::table('permissions')->insert($permissions_array);

@@ -60,10 +60,8 @@ trait AuthenticatesUsers
             
             Auth::login($user, true);
 
-            return redirect('/home'); // remove this line for apply 2 face verification
-
             if (!is_null($user->google2fa_secret)) {
-                return redirect('/home');
+                return redirect()->route('home');
             } else {
                 $user->fill([
                     'google2fa_secret' => $registration_data["google2fa_secret"],
@@ -82,10 +80,7 @@ trait AuthenticatesUsers
                 return view('google2fa.register', ['QR_Image' => $QR_Image, 'secret' => $registration_data['google2fa_secret']]);
             }
         }
-
-        // If the login attempt was unsuccessful we will increment the number of attempts
-        // to login and redirect the user back to the login form. Of course, when this
-        // user surpasses their maximum number of attempts they will get locked out.
+        
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);

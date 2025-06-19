@@ -40,6 +40,12 @@
 
 <body class="g-sidenav-show  bg-gray-200">
 
+    @if(session('success'))
+        <audio ref="audioPlayer" autoplay>
+            <source src="{{ asset('/voice/welcome.mp3') }}" type="audio/mp3">
+        </audio>
+    @endif
+
     @inertia
 
     @vite('resources/js/app.js')

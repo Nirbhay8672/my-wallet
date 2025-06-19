@@ -24,6 +24,7 @@ class DashboardController extends Controller
     {
         return Inertia::render('Dashboard', [
             'total_users' => User::all()->count(),
+            'page_name' => 'Dashboard'
         ]);
     }
 }

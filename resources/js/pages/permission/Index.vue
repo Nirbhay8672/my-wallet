@@ -4,7 +4,7 @@
         <div class="row justify-content-between gy-3 mb-3">
             <div class="col-md-auto me-auto">
                 <div class="pagetitle">
-                    <h1>Role Permission</h1>
+                    <h4>Role Permission</h4>
                 </div>
             </div>
             <div class="col-md-auto ms-auto" v-if="!allow_update">
@@ -13,31 +13,38 @@
                     @click="allowUpdate"
                     v-if="hasPermission('update_permission')"
                 >
+                    <i class="fa fa-pencil"></i>
                     <span class="ms-2">Update Permissions</span>
                 </button>
             </div>
         </div>
-
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div
                         class="card-body p-4"
-                        v-if="loader"
                         style="height: 200px"
+                        v-if="loader"
                     >
-                        <div class="overflow dark" id="preload">
+                        <div class="pre-loader">
                             <div class="circle-line">
-                                <div class="circle-2"><img class="loader-icon-image" :src="`${$page.props.url}/images/coin.png`" alt="coin"></div>
-                                <div class="circle-1"><img class="loader-icon-image" :src="`${$page.props.url}/images/coin.png`" alt="coin"></div>
-                                <div class="circle-2"><img class="loader-icon-image" :src="`${$page.props.url}/images/coin.png`" alt="coin"></div>
+                                <img
+                                    class="loader-icon-image circle-one"
+                                    :src="`${$page.props.url}/images/coin.png`"
+                                    alt="coin"
+                                />
+                                <img
+                                    class="loader-icon-image circle-two"
+                                    :src="`${$page.props.url}/images/coin.png`"
+                                    alt="coin"
+                                />
                             </div>
                         </div>
                     </div>
                     <div class="card-body p-4" v-else>
                         <div class="row mb-3">
                             <div class="table-responsive">
-                                <table class="table table-bordered" style="border-radius: 100px !important;" v-for="(permissions, category_name, category_index) in grouped_permissions" :key="category_name">
+                                <table class="table table-bordered" style="border-radius: 100px !important;" v-for="(permissions, category_name) in grouped_permissions" :key="category_name">
                                     <tbody>
                                         <tr>
                                             <th class="p-3 bg-light" :colspan="roles.length + 1">{{ category_name }}</th>
@@ -70,7 +77,7 @@
                                                 :key="index"
                                             >
                                                 <template v-if="allow_update">
-                                                    <div class="form-check d-flex justify-content-center">
+                                                    <div class="form-check text-center">
                                                         <input
                                                             class="form-check-input permission-checkbox"
                                                             type="checkbox"
@@ -88,11 +95,11 @@
                                                             v-if="
                                                                 role.has_permission
                                                             "
-                                                            class="bi bi-shield-fill-check fs-5 text-success"
+                                                            class="fa fa-check fs-5 text-success"
                                                         ></i>
                                                         <i
                                                             v-else
-                                                            class="bi bi-shield-fill-x fs-5 text-danger"
+                                                            class="fa fa-times fs-5 text-danger"
                                                         ></i>
                                                     </div>
                                                 </template>

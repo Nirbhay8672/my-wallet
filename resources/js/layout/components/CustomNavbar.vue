@@ -5,7 +5,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                     <li class="breadcrumb-item text-sm">
-                        <a class="opacity-3 text-dark" href="javascript:;">
+                        <a class="opacity-3 text-dark" :href="`${$page.props.url}/`">
                             <svg width="12px" height="12px" class="mb-1" viewBox="0 0 45 40" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="../../../../www.w3.org/1999/xlink.html">
                                 <title>shop </title>
@@ -27,11 +27,8 @@
                             </svg>
                         </a>
                     </li>
-                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">/ Pages / </a>
-                    </li>
-                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">{{ $page.props.page_name }}</li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">/ {{ $page.props.page_name }}</li>
                 </ol>
-                <h6 class="font-weight-bolder mb-0 mt-2">{{ $page.props.page_name }}</h6>
             </nav>
             <div class="sidenav-toggler sidenav-toggler-inner d-xl-block d-none ">
                 <a href="javascript:;" class="nav-link text-body p-0">

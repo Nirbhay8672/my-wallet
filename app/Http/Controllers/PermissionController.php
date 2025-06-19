@@ -16,7 +16,9 @@ class PermissionController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('permission/Index');
+        return Inertia::render('permission/Index',[
+            'page_name' => 'Role Permissions'
+        ]);
     }
 
     public function rolePermission(): JsonResponse

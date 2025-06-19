@@ -3,9 +3,6 @@
     <main-page>
         <div class="row">
             <div class="col-lg-12 position-relative z-index-2">
-                <audio ref="audioPlayer" autoplay>
-                    <source :src="`${$page.props.url}/voice/welcome.mp3`" type="audio/mp3">
-                </audio>
                 <div class="row">
                     <div class="col-lg-3 col-md-6 col-sm-6 mt-sm-0 mt-4" v-if="hasPermission('view_users')">
                         <div class="card mb-2">
