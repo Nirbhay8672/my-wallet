@@ -59,11 +59,3 @@ Route::prefix('permissions')->as('permissions.')->middleware(['auth', '2fa'])->g
     Route::get('/get-role-permissions', [PermissionController::class, 'rolePermission'])->middleware(['permission:view_permissions'])->name('get_role_permission');
     Route::post('/update-role-permissions', [PermissionController::class, 'assignPermissionsByRoles'])->middleware(['permission:view_permissions'])->name('update_role_permission');
 });
-
-// sources url
-Route::prefix('sources')->as('sources.')->middleware(['auth', '2fa'])->group(function () {
-    Route::get('/index', [SourceController::class, 'index'])->middleware(['permission:view_sources'])->name('source_index');
-    Route::post('/datatable', [UserController::class, 'datatable'])->middleware(['permission:view_sources'])->name('source_datatable');
-    Route::post('/create-or-update/{user?}', [UserController::class, 'createOrUpdate'])->middleware(['permission:add_source'])->name('create_or_update');
-    Route::get('/delete/{user?}', [UserController::class, 'delete'])->middleware(['permission:delete_source'])->name('source_delete');
-});

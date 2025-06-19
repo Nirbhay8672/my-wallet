@@ -115,12 +115,6 @@ let menuItems = reactive([
         url: "permissions/index",
         has_permission: hasPermission("view_permissions"),
     },
-    {
-        name: "Sources",
-        icon: "fa fa-list",
-        url: "sources/index",
-        has_permission: hasPermission("view_sources"),
-    },
 ]);
 
 function hasPermission(permission_name) {
