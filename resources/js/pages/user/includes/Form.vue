@@ -230,7 +230,7 @@ function openModal(user) {
                     withParams([fields, "confirm_password"]),
                     "Password field is required."
                 ),
-            },  
+            },
             confirm_password: {
                 requiredIf: withParamsAndMessage(
                     withParams([fields, "password"]),
