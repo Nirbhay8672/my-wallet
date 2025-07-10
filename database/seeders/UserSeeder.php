@@ -43,6 +43,18 @@ class UserSeeder extends Seeder
             ['display_name' => 'Add Source', 'name' => 'add_source', 'category' => 'Source' , 'guard_name' => 'web'],
             ['display_name' => 'Update Source', 'name' => 'update_source', 'category' => 'Source' , 'guard_name' => 'web'],
             ['display_name' => 'Delete Source', 'name' => 'delete_source', 'category' => 'Source' , 'guard_name' => 'web'],
+
+            // banks
+            ['display_name' => 'View Banks', 'name' => 'view_banks', 'category' => 'Bank', 'guard_name' => 'web'],
+            ['display_name' => 'Add Bank', 'name' => 'add_bank', 'category' => 'Bank', 'guard_name' => 'web'],
+            ['display_name' => 'Edit Bank', 'name' => 'edit_bank', 'category' => 'Bank', 'guard_name' => 'web'],
+            ['display_name' => 'Delete Bank', 'name' => 'delete_bank', 'category' => 'Bank', 'guard_name' => 'web'],
+
+            // banks
+            ['display_name' => 'View Accounts', 'name' => 'view_accounts', 'category' => 'Account', 'guard_name' => 'web'],
+            ['display_name' => 'Add Account', 'name' => 'add_account', 'category' => 'Account', 'guard_name' => 'web'],
+            ['display_name' => 'Edit Account', 'name' => 'edit_account', 'category' => 'Account', 'guard_name' => 'web'],
+            ['display_name' => 'Delete Account', 'name' => 'delete_account', 'category' => 'Account', 'guard_name' => 'web'],
         ];
 
         DB::table('permissions')->insert($permissions_array);
@@ -77,6 +89,14 @@ class UserSeeder extends Seeder
             'view_dashboard',
             'view_profile',
             'update_profile',
+            'view_accounts',
+            'add_account',
+            'edit_account',
+            'delete_account',
+            'view_banks',
+            'add_bank',
+            'edit_bank',
+            'delete_bank',
         ];
  
         // user role

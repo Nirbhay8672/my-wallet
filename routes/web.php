@@ -9,6 +9,8 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BankController;
+use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -58,4 +60,20 @@ Route::prefix('permissions')->as('permissions.')->middleware(['auth', '2fa'])->g
     Route::get('/index', [PermissionController::class, 'index'])->middleware(['permission:view_permissions'])->name('permissions_index');
     Route::get('/get-role-permissions', [PermissionController::class, 'rolePermission'])->middleware(['permission:view_permissions'])->name('get_role_permission');
     Route::post('/update-role-permissions', [PermissionController::class, 'assignPermissionsByRoles'])->middleware(['permission:view_permissions'])->name('update_role_permission');
+});
+
+// banks url
+Route::prefix('banks')->as('banks.')->middleware(['auth', '2fa'])->group(function () {
+    Route::get('/index', [BankController::class, 'index'])->middleware(['permission:view_banks'])->name('index');
+    Route::post('/create', [BankController::class, 'store'])->middleware(['permission:add_bank'])->name('create');
+    Route::post('/update/{bank}', [BankController::class, 'update'])->middleware(['permission:edit_bank'])->name('update');
+    Route::get('/delete/{bank}', [BankController::class, 'destroy'])->middleware(['permission:delete_bank'])->name('delete');
+});
+
+// Account routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index')->middleware('permission:view_accounts');
+    Route::post('/accounts', [AccountController::class, 'store'])->name('accounts.store')->middleware('permission:add_account');
+    Route::put('/accounts/{account}', [AccountController::class, 'update'])->name('accounts.update')->middleware('permission:edit_account');
+    Route::delete('/accounts/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy')->middleware('permission:delete_account');
 });
