@@ -72,8 +72,8 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'first_name' => 'Super',
             'last_name' => 'Admin',
-            'email' => 'superadmin@gmail.com',
-            'password' => bcrypt('Nux@5476'),
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('123123'),
             'profile_path' => '',
         ]);
 
@@ -98,7 +98,7 @@ class UserSeeder extends Seeder
             'edit_bank',
             'delete_bank',
         ];
- 
+
         // user role
         $user_role = Role::create([
             'name' => 'user',
@@ -110,9 +110,9 @@ class UserSeeder extends Seeder
         $user_1 = User::create([
             'name' => 'Nux',
             'first_name' => 'Nirbhay',
-            'last_name' => 'Hathaliya', 
-            'email' => 'hathaliyank@gmail.com',
-            'password' => bcrypt('Nux@867298'),
+            'last_name' => 'Hathaliya',
+            'email' => 'user@gmail.com',
+            'password' => bcrypt('123123'),
             'profile_path' => '',
         ]);
 
@@ -122,9 +122,9 @@ class UserSeeder extends Seeder
         $user_2 = User::create([
             'name' => 'Usha',
             'first_name' => 'Usha',
-            'last_name' => 'Hathaliya', 
+            'last_name' => 'Hathaliya',
             'email' => 'ushavadher707@gmail.com',
-            'password' => bcrypt('Usha@772002'),
+            'password' => bcrypt('123123'),
             'profile_path' => '',
         ]);
 

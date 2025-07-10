@@ -1,7 +1,7 @@
 <template>
     <inertia-head title="Role Permissions" />
     <main-page>
-        <div class="row justify-content-between gy-3 mb-3">
+        <div class="row justify-content-between gy-3 mb-1">
             <div class="col-md-auto me-auto">
                 <div class="pagetitle">
                     <h4>Role Permission</h4>
@@ -125,7 +125,7 @@
         </div>
     </main-page>
 </template>
-    
+
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
@@ -143,7 +143,7 @@ let loader = ref(true);
 
 let grouped_permissions = ref([]);
 let roles = ref([]);
-let allow_update = ref(false);  
+let allow_update = ref(false);
 
 onMounted(() => {
     setTimeout(function () {

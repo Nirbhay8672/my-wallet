@@ -36,7 +36,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout-auth', [LoginController::class, 'logOut']);
 });
 
-Route::middleware(['2fa', 'auth'])->group(function () {
+// Route::middleware(['2fa', 'auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('', [DashboardController::class, 'index'])->name('home');
 
     Route::post('/2fa', function () {
@@ -45,7 +46,7 @@ Route::middleware(['2fa', 'auth'])->group(function () {
 });
 
 // users url
-Route::prefix('users')->as('users.')->middleware(['auth', '2fa'])->group(function () {
+Route::prefix('users')->as('users.')->middleware(['auth'])->group(function () {
     Route::get('/index', [UserController::class, 'index'])->middleware(['permission:view_users'])->name('user_index');
     Route::post('/datatable', [UserController::class, 'datatable'])->middleware(['permission:view_users'])->name('user_datatable');
     Route::post('/create-or-update/{user?}', [UserController::class, 'createOrUpdate'])->middleware(['permission:add_user'])->name('create_or_update');
@@ -56,14 +57,14 @@ Route::prefix('users')->as('users.')->middleware(['auth', '2fa'])->group(functio
 });
 
 // permissions url
-Route::prefix('permissions')->as('permissions.')->middleware(['auth', '2fa'])->group(function () {
+Route::prefix('permissions')->as('permissions.')->middleware(['auth'])->group(function () {
     Route::get('/index', [PermissionController::class, 'index'])->middleware(['permission:view_permissions'])->name('permissions_index');
     Route::get('/get-role-permissions', [PermissionController::class, 'rolePermission'])->middleware(['permission:view_permissions'])->name('get_role_permission');
     Route::post('/update-role-permissions', [PermissionController::class, 'assignPermissionsByRoles'])->middleware(['permission:view_permissions'])->name('update_role_permission');
 });
 
 // banks url
-Route::prefix('banks')->as('banks.')->middleware(['auth', '2fa'])->group(function () {
+Route::prefix('banks')->as('banks.')->middleware(['auth'])->group(function () {
     Route::get('/index', [BankController::class, 'index'])->middleware(['permission:view_banks'])->name('index');
     Route::post('/create', [BankController::class, 'store'])->middleware(['permission:add_bank'])->name('create');
     Route::post('/update/{bank}', [BankController::class, 'update'])->middleware(['permission:edit_bank'])->name('update');

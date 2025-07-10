@@ -1,7 +1,7 @@
 <template>
     <inertia-head title="Users" />
     <main-page>
-        <div class="row justify-content-between gy-3 mb-3">
+        <div class="row justify-content-between gy-3 mb-1">
             <div class="col-md-auto me-auto">
                 <div class="pagetitle">
                     <h4>Users</h4>
@@ -98,7 +98,7 @@
                                                         <img
                                                             :src="
                                                                 user.profile_path
-                                                                    ? `${$page.props.url}/${user.profile_path}`
+                                                                    ? `${user.profile_path}`
                                                                     : ''
                                                             "
                                                             class="rounded-circle avatar"
