@@ -26,7 +26,7 @@
                                 >
                                     <img
                                         id="bank_logo_file"
-                                        :src="logoPreview"
+                                        src="https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
                                         class="rounded"
                                         style="width: 80px; height: 80px; object-fit: contain;"
                                     />
@@ -39,35 +39,36 @@
                                     Upload Logo
                                 </button>
                             </div>
-                            <Field
-                                v-model="fields.logo"
-                                label="Bank Logo"
-                                label-class="required"
+                            <input
                                 type="file"
                                 id="logo"
-                                field="logo"
-                                :errors="formValidation.errors"
-                                no-label
-                                no-input
+                                ref="logoInput"
+                                @change="previewFiles"
+                                class="form-control d-none"
+                                accept="image/png, image/jpeg, image/jpg"
+                                :class="{
+                                    'is-invalid':
+                                        formValidation.hasError('logo_path'),
+                                }"
+                            />
+                            <span
+                                :class="{
+                                    'is-invalid':
+                                        formValidation.hasError('logo_path'),
+                                }"
+                            ></span>
+                            <div
+                                class="invalid-feedback"
+                                v-if="formValidation.hasError('logo_path')"
                             >
-                                <template #input="{ hasError }">
-                                    <input
-                                        type="file"
-                                        id="logo"
-                                        ref="logoInput"
-                                        class="form-control d-none"
-                                        accept="image/*"
-                                        @change="handleFileUpload"
-                                        :class="{ 'is-invalid': hasError }"
-                                    />
-                                </template>
-                            </Field>
+                                <span>{{
+                                    formValidation.getError("logo_path")[0]
+                                }}</span>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" :disabled="loading">
-                                {{ loading ? 'Saving...' : 'Save' }}
-                            </button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </form>
                 </div>
@@ -139,8 +140,9 @@ function triggerLogoUpload() {
 }
 
 function previewFiles(event) {
+    fields.logo_path = event.target.files[0].name;
     fields.logo = event.target.files[0].name;
-    var image = document.getElementById("logo");
+    var image = document.getElementById("bank_logo_file");
     image.src = URL.createObjectURL(event.target.files[0]);
 }
 
@@ -155,9 +157,14 @@ function clearFormData() {
 function handleSubmit() {
     formValidation.validate();
     let form_data = new FormData();
-    if (fields.logo && fields.logo instanceof File) {
-        form_data.set("logo", fields.logo, fields.logo.name);
+
+    let logo = document.getElementById("logo");
+
+    if (logo && logo.files.length > 0) {
+        let file = logo.files[0];
+        form_data.set("logo", file, file.name);
     }
+
     form_data.set("id", fields.id || "");
     form_data.set("name", fields.name);
     let url = props.isEdit ? `/banks/update/${fields.id}` : "/banks/create";
@@ -166,7 +173,6 @@ function handleSubmit() {
     if (formValidation.isValid()) {
         axios[method](url, form_data, settings)
             .then((response) => {
-                // Close modal
                 const modalEl = document.getElementById(props.modalId);
                 if (modalEl) {
                     const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);

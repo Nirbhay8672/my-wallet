@@ -22,9 +22,14 @@ class BankController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'logo' => 'required|string|max:255',
+            'logo' => 'required|file',
         ]);
-        Bank::create($validated);
+
+        Bank::create([
+            'name' => $validated['name'],
+            'logo' => $validated['logo_path'] ?? '',
+        ]);
+
         return redirect()->route('banks.index')->with('success', 'Bank created successfully.');
     }
 
@@ -43,4 +48,4 @@ class BankController extends Controller
         $bank->delete();
         return redirect()->route('banks.index')->with('success', 'Bank deleted successfully.');
     }
-} 
+}
