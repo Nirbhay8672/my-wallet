@@ -78,6 +78,7 @@
                                                 <th>Name</th>
                                                 <th>Email</th>
                                                 <th>Role</th>
+                                                <th class="text-center align-middle">Status</th>
                                                 <th class="text-center align-middle">
                                                     Action
                                                 </th>
@@ -137,6 +138,21 @@
                                                         }}
                                                     </td>
                                                     <td
+                                                        style="min-width: 100px"
+                                                        class="text-center align-middle"
+                                                    >
+                                                        <div class="d-flex justify-content-center">
+                                                            <ToggleButton
+                                                                v-model="user.active"
+                                                                :disabled="user.id == 1"
+                                                                color="success"
+                                                                size="small"
+                                                                @change="toggleUserStatus(user)"
+                                                                v-if="hasPermission('update_user') && !isUserSuperAdmin(user)"
+                                                            />
+                                                        </div>
+                                                    </td>
+                                                    <td
                                                         style="min-width: 200px"
                                                         class="text-center align-middle"
                                                     >
@@ -175,7 +191,7 @@
                                                     style="width: 100%"
                                                     class="text-center"
                                                 >
-                                                    <td colspan="6" class="align-middle">
+                                                    <td colspan="7" class="align-middle">
                                                         <img
                                                             alt=""
                                                             :src="`${$page.props.url}/images/no_found.png`"
@@ -256,6 +272,7 @@
             <user-form
                 ref="user_form"
                 :roles="roles"
+                :auth="auth"
                 @reload="reloadTable()"
             ></user-form>
         </teleport>
@@ -263,11 +280,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive } from "vue";
+import { ref, onMounted, reactive, computed } from "vue";
 import axios from "axios";
 import { userRoutes } from "../../routes/UserRoutes";
 import { toastAlert, confirmAlert } from "../../helpers/alert";
 import UserForm from "./includes/Form.vue";
+import ToggleButton from "../../components/ToggleButton.vue";
 
 const props = defineProps({
     auth: {
@@ -279,6 +297,18 @@ const props = defineProps({
         required: true,
     },
 });
+
+// Check if current user is super admin
+const isSuperAdmin = computed(() => {
+    if (!props.auth?.user?.roles) return false;
+    return props.auth.user.roles.some(role => role.name === 'super_admin');
+});
+
+// Check if a specific user has super admin role
+const isUserSuperAdmin = (user) => {
+    if (!user?.roles) return false;
+    return user.roles.some(role => role.name === 'super_admin');
+};
 
 let users = ref([]);
 let loader = ref(true);
@@ -350,6 +380,44 @@ function reloadTable() {
                 });
             }
         });
+}
+
+function toggleUserStatus(user) {
+    const newStatus = !user.active;
+    const statusText = newStatus ? 'activate' : 'deactivate';
+
+    confirmAlert({
+        title: "Update User Status",
+        icon: "question",
+        html: `Are you sure, you want to <strong>${statusText}</strong> <strong>${user.name}</strong>?`,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios
+                .post(`/users/${user.id}/toggle-status`, {
+                    active: newStatus
+                })
+                .then((response) => {
+                    toastAlert({ title: response.data.message });
+                    reloadTable();
+                })
+                .catch(function (error) {
+                    if (error.response && error.response.status === 422) {
+                        toastAlert({
+                            title: error.response.data.message,
+                            icon: "error",
+                        });
+                    } else {
+                        toastAlert({
+                            title: "Something went wrong while updating user status.",
+                            icon: "error",
+                        });
+                    }
+                });
+        } else {
+            // Revert the checkbox if user cancels
+            reloadTable();
+        }
+    });
 }
 
 function deleteUser(user) {

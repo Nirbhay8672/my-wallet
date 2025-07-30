@@ -35,6 +35,7 @@ class BankController extends Controller
     {
         $bank->update([
             'name' => $request->validated('name'),
+            'active' => $request->boolean('active', true),
         ]);
 
         if ($request->hasFile('logo')) {
@@ -48,5 +49,15 @@ class BankController extends Controller
     {
         $bank->delete();
         return redirect()->route('banks.index')->with('success', 'Bank deleted successfully.');
+    }
+
+    public function toggleStatus(Request $request, Bank $bank)
+    {
+        $bank->update([
+            'active' => $request->input('active', !$bank->active)
+        ]);
+
+        $status = $bank->active ? 'activated' : 'deactivated';
+        return $this->successResponse(message: "{$bank->name} has been {$status} successfully.");
     }
 }

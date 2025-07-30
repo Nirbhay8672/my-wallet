@@ -154,6 +154,20 @@
                         </template>
                     </Field>
                 </div>
+                <div class="col-lg-6 mb-2" v-if="!isUserSuperAdmin">
+                    <div class="form-group">
+                        <label class="form-label">Status</label>
+                        <div class="d-flex align-items-center">
+                            <ToggleButton
+                                v-model="fields.active"
+                                :disabled="fields.id == 1"
+                                color="success"
+                                size="medium"
+                                @change="handleStatusChange"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
 
@@ -170,8 +184,9 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import Modal from "../../../components/Modal.vue";
+import ToggleButton from "../../../components/ToggleButton.vue";
 import {
     FormValidation,
     withParamsAndMessage,
@@ -188,7 +203,24 @@ let props = defineProps({
         required : true,
         type : Array,
         default : []
+    },
+    auth: {
+        type: Object,
+        required: true,
     }
+});
+
+// Check if current user is super admin
+const isSuperAdmin = computed(() => {
+    if (!props.auth?.user?.roles) return false;
+    return props.auth.user.roles.some(role => role.name === 'super_admin');
+});
+
+// Check if the user being edited has super admin role
+const isUserSuperAdmin = computed(() => {
+    if (!fields.role_id) return false;
+    const userRole = props.roles.find(role => role.id === fields.role_id);
+    return userRole?.name === 'super_admin';
 });
 
 let user_form = ref(null);
@@ -209,6 +241,7 @@ let fields = reactive({
     password: "",
     confirm_password: "",
     role_id: "",
+    active: true,
 });
 
 function openModal(user) {
@@ -223,6 +256,7 @@ function openModal(user) {
         fields.profile_path = user.profile_path;
         fields.profile_image = user.profile_path;
         fields.role_id = user.roles[0].id;
+        fields.active = user.active;
 
         formValidation.addFields(fields, {
             password: {
@@ -330,6 +364,11 @@ function handleSubmit() {
             icon: "error"
         });
     }
+}
+
+function handleStatusChange(newValue) {
+    // Optional: Add any additional logic when status changes
+    console.log('Status changed to:', newValue);
 }
 
 defineExpose({

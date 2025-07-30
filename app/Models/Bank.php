@@ -12,10 +12,11 @@ class Bank extends Model
     protected $fillable = [
         'name',
         'logo',
+        'active',
     ];
 
     public function accounts()
     {
         return $this->hasMany(Account::class);
     }
-} 
+}

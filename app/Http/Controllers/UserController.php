@@ -135,6 +135,29 @@ class UserController extends Controller
         }
     }
 
+    public function toggleStatus(Request $request, User $user): JsonResponse
+    {
+        try {
+            DB::beginTransaction();
+
+            // Prevent deactivating the first user (admin)
+            if ($user->id == 1 && !$request->active) {
+                return $this->errorResponse(message: "Cannot deactivate the main administrator account.");
+            }
+
+            $user->update(['active' => $request->active]);
+
+            $status = $request->active ? 'activated' : 'deactivated';
+
+            DB::commit();
+
+            return $this->successResponse(message: "{$user->name} has been {$status} successfully.");
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return $this->errorResponse(message: $exception->getMessage());
+        }
+    }
+
     public function delete(User $user): JsonResponse
     {
         try {

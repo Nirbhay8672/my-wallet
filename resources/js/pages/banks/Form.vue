@@ -63,6 +63,19 @@
                     :errors="formValidation.errors"
                 ></Field>
             </div>
+            <div class="mb-3">
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <div class="d-flex align-items-center">
+                        <ToggleButton
+                            v-model="fields.active"
+                            color="success"
+                            size="medium"
+                            @change="handleStatusChange"
+                        />
+                    </div>
+                </div>
+            </div>
         </form>
 
         <template #modal_footer>
@@ -72,8 +85,9 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import Field from "../../helpers/Field.vue";
+import ToggleButton from "../../components/ToggleButton.vue";
 import { FormValidation } from "../../helpers/Validation";
 import { resetObjectKeys } from "../../helpers/utils";
 import axios from "axios";
@@ -105,7 +119,8 @@ let fields = reactive({
     id: "",
     name: "",
     logo: "",
-    logo_path: ""
+    logo_path: "",
+    active: true
 });
 
 function openModal(bank) {
@@ -135,6 +150,7 @@ function openModal(bank) {
         Object.assign(fields, bank);
         fields.logo_path = bank.logo;
         fields.logo = "";
+        fields.active = bank.active !== undefined ? bank.active : true;
 
         // Disable logo validation when editing (since it's optional)
         formValidation.disableField('logo_path');
@@ -148,6 +164,7 @@ function openModal(bank) {
     } else {
         // Enable logo validation for new banks
         formValidation.enableField('logo_path');
+        fields.active = true;
     }
 
     // Open modal (Bootstrap)
@@ -231,6 +248,7 @@ function handleSubmit() {
 
     form_data.set("id", fields.id || "");
     form_data.set("name", fields.name);
+    form_data.set("active", fields.active ? 1 : 0);
     let url = props.isEdit ? `/banks/update/${fields.id}` : "/banks/create";
     let method = props.isEdit ? "post" : "post";
     let settings = { headers: { "content-type": "multipart/form-data" } };
@@ -269,6 +287,11 @@ function handleSubmit() {
 
 function handleClose() {
     clearFormData();
+}
+
+function handleStatusChange(newValue) {
+    // Optional: Add any additional logic when status changes
+    console.log('Bank status changed to:', newValue);
 }
 
 defineExpose({

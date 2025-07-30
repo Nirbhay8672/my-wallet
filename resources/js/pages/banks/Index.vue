@@ -40,6 +40,7 @@
                             <tr>
                                 <th>Logo</th>
                                 <th>Name</th>
+                                <th class="text-center align-middle">Status</th>
                                 <th class="text-center align-middle">Actions</th>
                             </tr>
                         </thead>
@@ -50,6 +51,16 @@
                                         style="width: 50px; height: 50px; object-fit: contain;">
                                 </td>
                                 <td style="min-width: 100px">{{ bank.name }}</td>
+                                <td style="min-width: 100px" class="text-center align-middle">
+                                    <div class="d-flex justify-content-center">
+                                        <ToggleButton
+                                            v-model="bank.active"
+                                            color="success"
+                                            size="small"
+                                            @change="toggleBankStatus(bank)"
+                                        />
+                                    </div>
+                                </td>
                                 <td style="min-width: 100px;" class="text-center align-middle">
                                     <button class="btn btn-sm btn-primary me-2" @click="editBank(bank)">
                                         <i
@@ -64,7 +75,7 @@
                                 </td>
                             </tr>
                             <tr v-if="!banks.length">
-                                <td colspan="3" class="text-center align-middle">No banks found</td>
+                                <td colspan="4" class="text-center align-middle">No banks found</td>
                             </tr>
                         </tbody>
                     </table>
@@ -76,15 +87,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
 import axios from 'axios';
 import BankForm from './Form.vue';
+import ToggleButton from '../../components/ToggleButton.vue';
 import { confirmAlert, toastAlert } from '../../helpers/alert';
 
 const props = defineProps({
     banks: Array,
 });
+
+
 
 const selectedBank = ref(null);
 const bankForm = ref(null);
@@ -96,6 +110,30 @@ const editBank = (bank) => {
     if (bankForm.value) {
         bankForm.value.openModal(bank);
     }
+};
+
+const toggleBankStatus = (bank) => {
+    axios.post(`/banks/${bank.id}/toggle-status`, {
+        active: bank.active
+    })
+    .then((response) => {
+        toastAlert({ title: response.data.message });
+    })
+    .catch(function (error) {
+        // Revert the toggle if there's an error
+        bank.active = !bank.active;
+        if (error.response && error.response.status === 422) {
+            toastAlert({
+                title: error.response.data.message,
+                icon: "error",
+            });
+        } else {
+            toastAlert({
+                title: "Something went wrong while updating the bank status.",
+                icon: "error",
+            });
+        }
+    });
 };
 
 const deleteBank = (bank) => {

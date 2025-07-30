@@ -26,6 +26,16 @@ class LoginController extends Controller
         $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            // Check if user is active
+            if (!$user->active) {
+                Auth::logout();
+                return response()->json([
+                    'message' => 'Your account is inactive. Please contact admin.',
+                    'is_success' => false
+                ], 200);
+            }
 
             return response()->json([
                 'url' => session('url.intended'),

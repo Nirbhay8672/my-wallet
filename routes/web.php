@@ -51,6 +51,7 @@ Route::prefix('users')->as('users.')->middleware(['auth'])->group(function () {
     Route::post('/datatable', [UserController::class, 'datatable'])->middleware(['permission:view_users'])->name('user_datatable');
     Route::post('/create-or-update/{user?}', [UserController::class, 'createOrUpdate'])->middleware(['permission:add_user'])->name('create_or_update');
     Route::get('/delete/{user?}', [UserController::class, 'delete'])->middleware(['permission:delete_user'])->name('user_delete');
+    Route::post('/{user}/toggle-status', [UserController::class, 'toggleStatus'])->middleware(['permission:update_user'])->name('toggle_status');
 
     Route::get('/profile', [UserController::class, 'profile'])->middleware(['permission:view_profile'])->name('profile');
     Route::post('/update-profile/{user}', [UserController::class, 'updateProfile'])->middleware(['permission:update_profile'])->name('update_profile');
@@ -69,6 +70,7 @@ Route::prefix('banks')->as('banks.')->middleware(['auth'])->group(function () {
     Route::post('/datatable', [BankController::class, 'datatable'])->middleware(['permission:view_banks'])->name('datatable');
     Route::post('/create', [BankController::class, 'store'])->middleware(['permission:add_bank'])->name('create');
     Route::post('/update/{bank}', [BankController::class, 'update'])->middleware(['permission:edit_bank'])->name('update');
+    Route::post('/{bank}/toggle-status', [BankController::class, 'toggleStatus'])->middleware(['permission:edit_bank'])->name('toggle_status');
     Route::get('/delete/{bank}', [BankController::class, 'destroy'])->middleware(['permission:delete_bank'])->name('delete');
 });
 

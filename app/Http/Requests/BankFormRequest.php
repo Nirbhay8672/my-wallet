@@ -17,6 +17,7 @@ class BankFormRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|string|max:255',
+            'active' => 'boolean',
         ];
 
         // Logo is required for new banks, optional for updates
@@ -34,6 +35,7 @@ class BankFormRequest extends FormRequest
         $fields = [
             'name' => $this->name,
             'logo' => 'temp',
+            'active' => $this->boolean('active', true),
         ];
 
         return $fields;
