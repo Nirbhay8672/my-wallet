@@ -13,7 +13,10 @@ class LoginController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('auth/Login');
+        return Inertia::render('auth/Login', [
+            'error' => session('error'),
+            'success' => session('success'),
+        ]);
     }
 
     public function postLogin(Request $request): JsonResponse

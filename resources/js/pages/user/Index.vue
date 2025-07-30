@@ -383,41 +383,28 @@ function reloadTable() {
 }
 
 function toggleUserStatus(user) {
-    const newStatus = !user.active;
-    const statusText = newStatus ? 'activate' : 'deactivate';
-
-    confirmAlert({
-        title: "Update User Status",
-        icon: "question",
-        html: `Are you sure, you want to <strong>${statusText}</strong> <strong>${user.name}</strong>?`,
-    }).then((result) => {
-        if (result.isConfirmed) {
-            axios
-                .post(`/users/${user.id}/toggle-status`, {
-                    active: newStatus
-                })
-                .then((response) => {
-                    toastAlert({ title: response.data.message });
-                    reloadTable();
-                })
-                .catch(function (error) {
-                    if (error.response && error.response.status === 422) {
-                        toastAlert({
-                            title: error.response.data.message,
-                            icon: "error",
-                        });
-                    } else {
-                        toastAlert({
-                            title: "Something went wrong while updating user status.",
-                            icon: "error",
-                        });
-                    }
+    axios
+        .post(`/users/${user.id}/toggle-status`, {
+            active: user.active
+        })
+        .then((response) => {
+            toastAlert({ title: response.data.message });
+        })
+        .catch(function (error) {
+            // Revert the toggle if there's an error
+            user.active = !user.active;
+            if (error.response && error.response.status === 422) {
+                toastAlert({
+                    title: error.response.data.message,
+                    icon: "error",
                 });
-        } else {
-            // Revert the checkbox if user cancels
-            reloadTable();
-        }
-    });
+            } else {
+                toastAlert({
+                    title: "Something went wrong while updating user status.",
+                    icon: "error",
+                });
+            }
+        });
 }
 
 function deleteUser(user) {

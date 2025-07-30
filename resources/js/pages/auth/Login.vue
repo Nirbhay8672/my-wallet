@@ -15,6 +15,9 @@
                             <div v-if="incorrect" class="alert-danger">
                                 Incorrect username or password.
                             </div>
+                            <div v-if="accountInactive" class="alert-danger">
+                                Your account is inactive. Please contact administrator.
+                            </div>
                             <form>
                                 <div class="mb-3">
                                     <label class="form-label">Username</label>
@@ -141,10 +144,19 @@ const props = defineProps({
         type: String,
         required: true,
     },
+    error: {
+        type: String,
+        default: null,
+    },
+    success: {
+        type: String,
+        default: null,
+    },
 });
 
 let incorrect = ref(false);
 let show_password = ref(false);
+let accountInactive = ref(false);
 
 const data = reactive({
     username: "",
@@ -169,15 +181,53 @@ function hideShowPassword() {
 function submit() {
     formValidation.validate();
     incorrect.value = false;
+    accountInactive.value = false;
 
     if (formValidation.isValid()) {
         axios.post(`${props.url}/post-login`, data).then((response) => {
             if (response.data.is_success) {
                 window.location.href = `${response.data.url ?? props.url}/`;
             } else {
+                // Check if the error is due to inactive account
+                if (response.data.message && response.data.message.includes('inactive')) {
+                    accountInactive.value = true;
+                } else {
+                    incorrect.value = true;
+                }
+            }
+        }).catch((error) => {
+            if (error.response && error.response.data && error.response.data.message) {
+                if (error.response.data.message.includes('inactive')) {
+                    accountInactive.value = true;
+                } else {
+                    incorrect.value = true;
+                }
+            } else {
                 incorrect.value = true;
             }
         });
     }
 }
+
+// Check for session messages on component mount
+onMounted(() => {
+    // Check if there's a session error message about inactive account
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+    if (error && error.includes('inactive')) {
+        accountInactive.value = true;
+    }
+
+    // Check for session flash messages
+    if (window.location.search.includes('error=inactive')) {
+        accountInactive.value = true;
+    }
+
+    // Check for session error prop
+    if (props.error === 'inactive') {
+        accountInactive.value = true;
+    }
+});
 </script>
+
+

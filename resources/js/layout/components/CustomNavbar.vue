@@ -42,7 +42,7 @@
             <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
                 <div class="ms-md-auto pe-md-3 d-flex align-items-center">
                 </div>
-                <ul class="navbar-nav  justify-content-end">
+                <ul class="navbar-nav justify-content-end">
                     <li class="nav-item">
                         <a
                             :href="`${$page.props.url}/users/profile`"
@@ -52,6 +52,18 @@
                                 ? $page.props.auth.user.profile_path
                                 : `${$page.props.url}/images/profile.png`
                             " class="avatar">
+                        </a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <a
+                            href="javascript:void(0)"
+                            @click="logout"
+                            class="nav-link text-body p-0 d-flex align-items-center logout-btn"
+                            title="Logout"
+                        >
+                            <div class="logout-icon-wrapper">
+                                <i class="fa fa-power-off text-danger"></i>
+                            </div>
                         </a>
                     </li>
                     <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -69,4 +81,83 @@
     </nav>
 </template>
 
-<script setup></script>
+<script setup>
+import { confirmAlert } from '../../helpers/alert';
+
+const logout = () => {
+    confirmAlert({
+        title: "Logout",
+        icon: "question",
+        html: "Are you sure you want to logout?",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/logout-auth';
+        }
+    });
+};
+</script>
+
+<style scoped>
+.logout-btn {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    transform: translateY(-1px);
+}
+
+.logout-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffffff 0%, #bebebe 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.logout-icon-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.logout-btn:hover .logout-icon-wrapper {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.logout-btn:hover .logout-icon-wrapper::before {
+    opacity: 1;
+}
+
+.logout-icon-wrapper i {
+    color: white;
+    font-size: 16px;
+    z-index: 1;
+    position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .logout-icon-wrapper {
+        width: 35px;
+        height: 35px;
+    }
+
+    .logout-icon-wrapper i {
+        font-size: 14px;
+    }
+}
+</style>
