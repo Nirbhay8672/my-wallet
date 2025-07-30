@@ -8,6 +8,8 @@ use App\Models\Bank;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Http\Requests\BankFormRequest;
+use Illuminate\Support\Facades\Storage;
 
 class BankController extends Controller
 {
@@ -20,33 +22,68 @@ class BankController extends Controller
         ]);
     }
 
-    public function store(BankFormRequest $request, BankService $bankService)
+    public function store(Request $request)
     {
-        $bank = Bank::create($request->fields());
-
-        if ($request->logo) {
-            $bankService->storeLogoImage($request->file('logo'), $bank);
-        }
-
-        return $this->successResponse(message: "{$bank->name} has been {$request->action()} successfully.");
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'logo' => 'required|string|max:255',
+        ]);
+        Bank::create($validated);
+        return redirect()->route('banks.index')->with('success', 'Bank created successfully.');
     }
 
-    public function update(BankFormRequest $request, Bank $bank, BankService $bankService)
+    public function update(Request $request, Bank $bank)
     {
-        $bank->update([
-            'name' => $request->validated('name'),
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'logo' => 'required|string|max:255',
         ]);
-
-        if ($request->hasFile('logo')) {
-            $bankService->storeLogoImage($request->file('logo'), $bank);
-        }
-
-        return $this->successResponse(message: "{$bank->name} has been updated successfully.");
+        $bank->update($validated);
+        return redirect()->route('banks.index')->with('success', 'Bank updated successfully.');
     }
 
     public function destroy(Bank $bank)
     {
+        Storage::disk('public')->delete("/uploads/banks/{$bank->logo}");
         $bank->delete();
-        return redirect()->route('banks.index')->with('success', 'Bank deleted successfully.');
+
+        return $this->successResponse(message: "{$bank->name} bank has been deleted successfully.");
+    }
+
+    public function datatable(Request $request)
+    {
+        try {
+            $search = $request->search;
+            $perPage = $request->per_page ?? 10;
+            $page = $request->page ?? 1;
+
+            $query = Bank::query();
+
+            if ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            }
+
+            $total = $query->count();
+            $offset = ($page - 1) * $perPage;
+
+            $banks = $query->offset($offset)
+                ->limit($perPage)
+                ->get();
+
+            $total_pages = ceil($total / $perPage);
+
+            $startIndex = ($page - 1) * $perPage;
+            $endIndex = min($startIndex + $perPage, $total);
+
+            return response()->json([
+                'banks' => $banks,
+                'total' => $total,
+                'total_pages' => $total_pages,
+                'start_index' => $startIndex + 1,
+                'end_index' => $endIndex,
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
+        }
     }
 }
