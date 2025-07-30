@@ -48,14 +48,13 @@
                 </div>
             </div>
         </div>
-
-        <BankModal modal-id="bankModal" :bank="selectedBank" :is-edit="!!selectedBank" @bank-saved="handleBankSaved" />
+        <BankModal modal-id="bankModal" :bank="selectedBank" :is-edit="!!selectedBank" @reload="handleBankSaved" />
     </main-page>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { usePage, router } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 import BankModal from './BankModal.vue';
 
 const props = defineProps({
@@ -78,5 +77,6 @@ const deleteBank = (bank) => {
 
 const handleBankSaved = () => {
     selectedBank.value = null;
+    window.location.reload();
 };
 </script>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BankFormRequest;
+use App\Http\Services\BankService;
 use App\Models\Bank;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,19 +20,15 @@ class BankController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(BankFormRequest $request, BankService $bankService)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'logo' => 'required|file',
-        ]);
+        $bank = Bank::create($request->fields());
 
-        Bank::create([
-            'name' => $validated['name'],
-            'logo' => $validated['logo_path'] ?? '',
-        ]);
+        if ($request->logo) {
+            $bankService->storeLogoImage($request->file('logo'), $bank);
+        }
 
-        return redirect()->route('banks.index')->with('success', 'Bank created successfully.');
+        return $this->successResponse(message: "{$bank->name} has been {$request->action()} successfully.");
     }
 
     public function update(Request $request, Bank $bank)

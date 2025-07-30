@@ -58,7 +58,7 @@ class UserController extends Controller
                 $query->where('email', 'like', '%' . $search . '%');
             }
 
-            $total = $query->count(); 
+            $total = $query->count();
             $offset = ($page - 1) * $perPage;
 
             $users = $query->offset($offset)
@@ -138,7 +138,7 @@ class UserController extends Controller
     {
         try {
             DB::beginTransaction();
-            
+
             Storage::disk('public')->delete("/uploads/users/{$user->id}");
 
             $user->delete();

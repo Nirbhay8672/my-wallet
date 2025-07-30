@@ -22,7 +22,7 @@
                         <div class="mb-3 text-center">
                             <div class="card-img-actions d-inline-block">
                                 <div
-                                    style="overflow: hidden; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto;"
+                                    style="overflow: hidden; border-radius: 5%; width: 200px; height: 150px; display: flex; align-items: center; justify-content: center; margin: 0 auto;"
                                 >
                                     <img
                                         id="bank_logo_file"
@@ -104,7 +104,7 @@ const props = defineProps({
     }
 });
 
-const emits = defineEmits(["bankSaved"]);
+const emits = defineEmits(["reload"]);
 
 let bank_modal = ref(null);
 let logoInput = ref(null);
@@ -178,7 +178,7 @@ function handleSubmit() {
                     const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
                     modal.hide();
                 }
-                emits("bankSaved");
+                emits("reload");
                 toastAlert({ title: response.data.message });
                 clearFormData();
             })
