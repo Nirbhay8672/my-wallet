@@ -1,126 +1,183 @@
 <template>
-  <div class="modal fade" :id="modalId" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">{{ isEdit ? 'Edit Bank' : 'Add Bank' }}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade" :id="modalId" tabindex="-1" aria-hidden="true" ref="modalRef">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ isEdit ? 'Edit Bank' : 'Add Bank' }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        @click="closeModal"></button>
+                </div>
+                <form @submit.prevent="handleSubmit">
+                    <div class="modal-body">
+                        <div class="mb-3 text-center">
+                            <div class="card-img-actions d-inline-block">
+                                <div style="overflow: hidden; border-radius: 5px;">
+                                    <img :src="logoPreview || '/images/profile.png'" class="bank-logo-preview"
+                                        style="width: 80px; height: 80px; object-fit: contain; border-radius: 5px;" />
+                                </div>
+                                <button class="btn btn-primary btn-sm mt-2" @click.prevent="triggerFile" type="button">
+                                    Upload Logo
+                                </button>
+                                <input type="file" ref="logoInput" @change="handleFileUpload" class="form-control d-none"
+                                    accept="image/png, image/jpeg, image/jpg" />
+                                <div v-if="errors.logo" class="invalid-feedback d-block">{{ errors.logo[0] }}</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Bank Name</label>
+                            <input type="hidden" v-model="form.id" id="id">
+                            <Field
+                                v-model="form.name"
+                                label="Bank Name"
+                                label-class="required"
+                                type="text"
+                                id="name"
+                                field="name"
+                                :errors="errors"
+                            ></Field>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            @click="closeModal">Close</button>
+                        <button type="submit" class="btn btn-success btn-sm" :disabled="loading">
+                            {{ loading ? 'Saving...' : (isEdit ? 'Update' : 'Submit') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="modal-body">
-          <form @submit.prevent="handleSubmit">
-            <div class="mb-3">
-              <label for="name" class="form-label">Bank Name</label>
-              <input type="text" class="form-control" id="name" v-model="form.name" required>
-            </div>
-            <div class="mb-3">
-              <label for="logo" class="form-label">Bank Logo</label>
-              <input type="file" class="form-control" id="logo" @change="handleFileUpload" accept="image/*" :required="!isEdit">
-              <div v-if="isEdit && form.logo" class="mt-2">
-                <img :src="form.logo" alt="Current Logo" class="img-thumbnail" style="height: 50px">
-                <span class="ms-2">Current Logo</span>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary" :disabled="loading">
-                {{ loading ? 'Saving...' : 'Save' }}
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
-  </div>
 </template>
 
-<script>
-import { ref, watch } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+<script setup>
+import { ref, watch, nextTick } from 'vue';
+import axios from 'axios';
+import { toastAlert } from '../../helpers/alert';
+import Field from '../../helpers/Field.vue';
 
-export default {
-  name: 'BankModal',
-  props: {
+const props = defineProps({
     modalId: {
-      type: String,
-      required: true
+        type: String,
+        required: true
     },
     bank: {
-      type: Object,
-      default: null
+        type: Object,
+        default: null
     },
     isEdit: {
-      type: Boolean,
-      default: false
+        type: Boolean,
+        default: false
     }
-  },
-  emits: ['bankSaved'],
-  setup(props, { emit }) {
-    const loading = ref(false);
-    const form = useForm({
-      name: '',
-      logo: null
-    });
+});
+const emit = defineEmits(['bankSaved']);
 
-    watch(() => props.bank, (newBank) => {
-      if (newBank) {
-        form.name = newBank.name;
-        form.logo = newBank.logo;
-      } else {
-        form.reset();
-      }
-    }, { immediate: true });
+const loading = ref(false);
+const logoInput = ref(null);
+const modalRef = ref(null);
+const errors = ref({});
+const logoPreview = ref('');
 
-    const handleFileUpload = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        form.logo = file;
-      }
-    };
+const form = ref({
+    id: '',
+    name: '',
+    logo: null
+});
 
-    const handleSubmit = () => {
-      loading.value = true;
-      const url = props.isEdit ? `/banks/update/${props.bank.id}` : '/banks/create';
-      
-      if (props.isEdit && !(form.logo instanceof File)) {
-        delete form.logo;
-      }
+watch(() => props.bank, (newBank) => {
+    if (newBank) {
+        form.value.name = newBank.name;
+        form.value.id = newBank.id;
+        form.value.logo = null;
+        logoPreview.value = newBank.logo ? `${window.location.origin}/${newBank.logo}` : '';
+    } else {
+        resetForm();
+    }
+    errors.value = {};
+}, { immediate: true });
 
-      form.submit(props.isEdit ? 'put' : 'post', url, {
-        preserveScroll: true,
-        onSuccess: () => {
-          loading.value = false;
-          emit('bankSaved');
-          bootstrap.Modal.getInstance(document.getElementById(props.modalId)).hide();
-          form.reset();
-        },
-        onError: () => {
-          loading.value = false;
+function triggerFile() {
+    logoInput.value && logoInput.value.click();
+}
+
+function handleFileUpload(e) {
+    const file = e.target.files[0];
+    if (file) {
+        form.value.logo = file;
+        logoPreview.value = URL.createObjectURL(file);
+    }
+}
+
+function closeModal() {
+    resetForm();
+    errors.value = {};
+    emit('bankSaved');
+    const modalEl = modalRef.value;
+    if (window.bootstrap && window.bootstrap.Modal) {
+        window.bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+    }
+}
+
+function resetForm() {
+    form.value.id = null;
+    form.value.name = '';
+    form.value.logo = null;
+    logoPreview.value = '';
+    if (logoInput.value) logoInput.value.value = '';
+}
+
+function handleSubmit() {
+    loading.value = true;
+    errors.value = {};
+    const url = props.isEdit && props.bank ? `/banks/update/${props.bank.id}` : '/banks/create';
+    const method = 'post';
+    const formData = new FormData();
+    formData.append('id', form.value.id);
+    formData.append('name', form.value.name);
+    if (form.value.logo) formData.append('logo', form.value.logo);
+
+    axios({
+        method,
+        url,
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' },
+    })
+        .then((response) => {
+            loading.value = false;
+            toastAlert({ title: response.data.message, icon: 'success' });
+            closeModal();
+        })
+        .catch((error) => {
+            loading.value = false;
+            if (error.response && error.response.data && error.response.data.errors) {
+                errors.value = error.response.data.errors;
+            } else {
+                toastAlert({ title: 'Something went wrong.', icon: 'error' });
+            }
+        });
+}
+
+function openModal(bank = null) {
+    if (bank) {
+        form.value.id = bank.id;
+        form.value.name = bank.name;
+        form.value.logo = null;
+        logoPreview.value = bank.logo ? `${window.location.origin}/${bank.logo}` : '';
+    } else {
+        resetForm();
+    }
+    errors.value = {};
+    nextTick(() => {
+        if (modalRef.value) {
+            const modalEl = modalRef.value;
+            if (window.bootstrap && window.bootstrap.Modal) {
+                window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+            }
         }
-      });
-    };
+    });
+}
 
-    return {
-      form,
-      loading,
-      handleSubmit,
-      handleFileUpload
-    };
-  }
-};
+defineExpose({
+    openModal
+});
 </script>
-
-<style scoped>
-.modal-backdrop {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1050;
-}
-.modal-dialog {
-  max-width: 400px;
-  width: 100%;
-}
-</style> 

@@ -65,6 +65,7 @@ Route::prefix('permissions')->as('permissions.')->middleware(['auth', '2fa'])->g
 // banks url
 Route::prefix('banks')->as('banks.')->middleware(['auth', '2fa'])->group(function () {
     Route::get('/index', [BankController::class, 'index'])->middleware(['permission:view_banks'])->name('index');
+    Route::post('/datatable', [BankController::class, 'datatable'])->middleware(['permission:view_banks'])->name('datatable');
     Route::post('/create', [BankController::class, 'store'])->middleware(['permission:add_bank'])->name('create');
     Route::post('/update/{bank}', [BankController::class, 'update'])->middleware(['permission:edit_bank'])->name('update');
     Route::get('/delete/{bank}', [BankController::class, 'destroy'])->middleware(['permission:delete_bank'])->name('delete');
