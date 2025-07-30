@@ -31,14 +31,17 @@ class BankController extends Controller
         return $this->successResponse(message: "{$bank->name} has been {$request->action()} successfully.");
     }
 
-    public function update(Request $request, Bank $bank)
+    public function update(BankFormRequest $request, Bank $bank, BankService $bankService)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'logo' => 'required|string|max:255',
+        $bank->update([
+            'name' => $request->validated('name'),
         ]);
-        $bank->update($validated);
-        return redirect()->route('banks.index')->with('success', 'Bank updated successfully.');
+
+        if ($request->hasFile('logo')) {
+            $bankService->storeLogoImage($request->file('logo'), $bank);
+        }
+
+        return $this->successResponse(message: "{$bank->name} has been updated successfully.");
     }
 
     public function destroy(Bank $bank)

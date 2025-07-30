@@ -71,7 +71,7 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover align-middle">
                                         <thead>
                                             <tr>
                                                 <th>Profile</th>
@@ -79,7 +79,7 @@
                                                 <th>Name</th>
                                                 <th>Email</th>
                                                 <th>Role</th>
-                                                <th class="text-center">
+                                                <th class="text-center align-middle">
                                                     Action
                                                 </th>
                                             </tr>
@@ -93,7 +93,8 @@
                                                     :key="`user_${index}`"
                                                 >
                                                     <td
-                                                        style="min-width: 100px"
+                                                        style="min-width: 200px"
+                                                        class="align-middle"
                                                     >
                                                         <img
                                                             :src="
@@ -103,15 +104,18 @@
                                                             "
                                                             class="rounded-circle avatar"
                                                             alt="profile image"
+                                                            style="height: 33px; width: auto;"
                                                         />
                                                     </td>
                                                     <td
                                                         style="min-width: 100px"
+                                                        class="align-middle"
                                                     >
                                                         {{ user.name }}
                                                     </td>
                                                     <td
                                                         style="min-width: 100px"
+                                                        class="align-middle"
                                                     >
                                                         {{
                                                             `${user.first_name} ${user.last_name}`
@@ -119,11 +123,13 @@
                                                     </td>
                                                     <td
                                                         style="min-width: 100px"
+                                                        class="align-middle"
                                                     >
                                                         {{ user.email }}
                                                     </td>
                                                     <td
                                                         style="min-width: 100px"
+                                                        class="align-middle"
                                                     >
                                                         {{
                                                             user.roles[0][
@@ -133,7 +139,7 @@
                                                     </td>
                                                     <td
                                                         style="min-width: 200px"
-                                                        class="text-center"
+                                                        class="text-center align-middle"
                                                     >
                                                         <button
                                                             class="btn bg-gradient-info btn-sm"
@@ -170,7 +176,7 @@
                                                     style="width: 100%"
                                                     class="text-center"
                                                 >
-                                                    <td colspan="6">
+                                                    <td colspan="6" class="align-middle">
                                                         <img
                                                             alt=""
                                                             :src="`${$page.props.url}/images/no_found.png`"

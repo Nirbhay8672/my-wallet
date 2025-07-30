@@ -139,7 +139,7 @@
 
         <template #modal_footer>
             <button
-                class="btn bg-gradient-primary btn-sm"
+                class="btn bg-gradient-primary"
                 type="button"
                 @click="handleSubmit"
             >
@@ -248,8 +248,17 @@ function handleSubmit() {
                     formValidation.setServerSideErrors(
                         error.response.data.errors
                     );
+                    toastAlert({
+                        title: "Something went wrong. Please try again.",
+                        icon: "error"
+                    });
                 }
             });
+    } else {
+        toastAlert({
+            title: "Something went wrong. Please try again.",
+            icon: "error"
+        });
     }
 }
 

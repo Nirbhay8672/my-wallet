@@ -44,18 +44,18 @@
                     <div class="card-body p-4" v-else>
                         <div class="row mb-3">
                             <div class="table-responsive">
-                                <table class="table table-bordered" style="border-radius: 100px !important;" v-for="(permissions, category_name) in grouped_permissions" :key="category_name">
+                                <table class="table table-bordered align-middle" style="border-radius: 100px !important;" v-for="(permissions, category_name) in grouped_permissions" :key="category_name">
                                     <tbody>
                                         <tr>
-                                            <th class="p-3 bg-light" :colspan="roles.length + 1">{{ category_name }}</th>
+                                            <th class="p-3 bg-light align-middle" :colspan="roles.length + 1">{{ category_name }}</th>
                                         </tr>
                                         <tr>
-                                            <th style="padding-left: 20px">
+                                            <th style="padding-left: 20px" class="align-middle">
                                                 Permissions
                                             </th>
                                             <th
                                                 v-for="role in roles"
-                                                class="text-center"
+                                                class="text-center align-middle"
                                                 style="min-width: 100px;"
                                             >
                                                 {{ role.display_name }}
@@ -67,6 +67,7 @@
                                                     min-width: 250px;
                                                     padding-left: 20px;
                                                 "
+                                                class="align-middle"
                                             >
                                                 {{ permission.display_name }}
                                             </td>
@@ -75,6 +76,7 @@
                                                     role, index
                                                 ) in permission.roles"
                                                 :key="index"
+                                                class="align-middle"
                                             >
                                                 <template v-if="allow_update">
                                                     <div class="form-check text-center">

@@ -15,10 +15,18 @@ class BankFormRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => 'required|string|max:255',
-            'logo' => 'required|file',
         ];
+
+        // Logo is required for new banks, optional for updates
+        if (!$this->filled('id')) {
+            $rules['logo'] = 'required|file|image|mimes:jpeg,jpg,png|max:2048';
+        } else {
+            $rules['logo'] = 'nullable|file|image|mimes:jpeg,jpg,png|max:2048';
+        }
+
+        return $rules;
     }
 
     public function fields(): array

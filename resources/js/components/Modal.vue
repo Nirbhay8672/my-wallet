@@ -27,7 +27,7 @@
                     <slot name="modal_footer"></slot>
                     <button
                         type="button"
-                        class="btn bg-gradient-secondary btn-sm"
+                        class="btn bg-gradient-secondary"
                         @click="close()"
                     >
                         Close
