@@ -14,7 +14,6 @@
                     v-if="hasPermission('add_user')"
                 >
                     <i class="fa fa-plus"></i>
-                    <span class="ms-2">Add User</span>
                 </button>
             </div>
         </div>

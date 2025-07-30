@@ -7,13 +7,33 @@
                     <h4>Banks</h4>
                 </div>
             </div>
-            <button class="btn btn-primary" @click="editBank(null)">
-                Add Bank
+            <button class="btn btn-primary btn-sm" @click="editBank(null)">
+                <i class="fa fa-plus"></i>
             </button>
         </div>
 
         <div class="card">
-            <div class="card-body">
+            <div
+                class="card-body p-4"
+                style="height: 200px"
+                v-if="loader"
+            >
+                <div class="pre-loader">
+                    <div class="circle-line">
+                        <img
+                            class="loader-icon-image circle-one"
+                            :src="`${$page.props.url}/images/coin.png`"
+                            alt="coin"
+                        />
+                        <img
+                            class="loader-icon-image circle-two"
+                            :src="`${$page.props.url}/images/coin.png`"
+                            alt="coin"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" v-else>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead>
@@ -56,7 +76,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { router } from '@inertiajs/vue3';
 import axios from 'axios';
 import BankForm from './Form.vue';
@@ -68,6 +88,7 @@ const props = defineProps({
 
 const selectedBank = ref(null);
 const bankForm = ref(null);
+const loader = ref(true);
 
 const editBank = (bank) => {
     selectedBank.value = bank;
@@ -106,6 +127,12 @@ const deleteBank = (bank) => {
         }
     });
 };
+
+onMounted(() => {
+    setTimeout(function () {
+        loader.value = false;
+    }, 1000);
+});
 
 const handleBankSaved = () => {
     selectedBank.value = null;

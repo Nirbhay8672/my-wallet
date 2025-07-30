@@ -122,3 +122,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.fa {
+    font-size: 13px !important;
+}
+
+.nav-link .fa {
+    font-size: 17px !important;
+}

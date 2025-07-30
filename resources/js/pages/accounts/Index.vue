@@ -5,7 +5,29 @@
       <h2>Accounts</h2>
       <button class="btn btn-primary" @click="openModal()">Add Bank Account</button>
     </div>
-    <div class="row">
+    <div class="row" v-if="loader">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body p-4" style="height: 200px">
+            <div class="pre-loader">
+              <div class="circle-line">
+                <img
+                  class="loader-icon-image circle-one"
+                  :src="`${$page.props.url}/images/coin.png`"
+                  alt="coin"
+                />
+                <img
+                  class="loader-icon-image circle-two"
+                  :src="`${$page.props.url}/images/coin.png`"
+                  alt="coin"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" v-else>
       <div class="col-md-4 mb-4" v-for="account in accounts" :key="account.id">
         <div class="card h-100 text-center">
           <img v-if="account.type === 'cash'" :src="`${$page.props.url}/images/coin.png`" alt="cash" class="card-img-top mx-auto mt-3" style="width: 80px; height: 80px; object-fit: contain;" />
@@ -28,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { usePage, router } from '@inertiajs/vue3';
 import AccountModal from './AccountModal.vue';
 
@@ -39,6 +61,7 @@ const props = defineProps({
 
 const showModal = ref(false);
 const editingAccount = ref(null);
+const loader = ref(true);
 
 function openModal(account = null) {
   editingAccount.value = account;
@@ -53,8 +76,14 @@ function deleteAccount(account) {
     router.get(`/accounts/delete/${account.id}`);
   }
 }
+onMounted(() => {
+  setTimeout(function () {
+    loader.value = false;
+  }, 1000);
+});
+
 function bankLogo(bank_id) {
   const bank = props.banks.find(b => b.id === bank_id);
   return bank ? `/images/banks/${bank.logo}` : '';
 }
-</script> 
+</script>

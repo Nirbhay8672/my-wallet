@@ -15,7 +15,7 @@
                 <div class="modal-header">
                     <h6 class="modal-title font-weight-normal" id="exampleModalLabel"><slot name="modal_title">Modal Title</slot></h6>
                     <button type="button" class="btn bg-gradient-primary btn-sm mt-2" @click="close()">
-                        <span aria-hidden="true">×</span>
+                        <span aria-hidden="true"><i class="fa fa-times"></i></span>
                     </button>
                 </div>
 
