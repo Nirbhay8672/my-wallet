@@ -193,3 +193,98 @@
         font-size: 14px;
     }
 }
+
+/* Sidebar overflow fix */
+.navbar-vertical.navbar-expand-xs {
+    overflow-x: hidden !important;
+}
+
+.navbar-vertical .navbar-nav .nav-link {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.navbar-vertical .navbar-nav .nav-link .nav-link-text,
+.navbar-vertical .navbar-nav .nav-link .sidenav-normal {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.navbar-vertical .sidenav-header {
+    overflow: hidden;
+}
+
+.navbar-vertical .sidenav-header .navbar-brand {
+    overflow: hidden;
+}
+
+.navbar-vertical .sidenav-header .navbar-brand span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+/* Additional fixes for sidebar elements */
+.navbar-vertical .nav-link .avatar {
+    max-width: 100%;
+    height: auto;
+}
+
+.navbar-vertical .navbar-collapse {
+    overflow-x: hidden;
+}
+
+.navbar-vertical .navbar-nav {
+    overflow-x: hidden;
+}
+
+.navbar-vertical .nav-item {
+    overflow: hidden;
+}
+
+/* Fix for inline styles that might cause overflow */
+.navbar-vertical .nav-link div[style*="margin-left"] {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.navbar-vertical .nav-link span {
+    max-width: calc(100% - 50px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Collapsed sidebar overflow fix */
+.sidenav.collapsed {
+    overflow-x: hidden !important;
+    max-width: 6rem !important;
+}
+
+.sidenav.collapsed .navbar-nav .nav-link {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sidenav.collapsed .navbar-nav .nav-link .nav-link-text,
+.sidenav.collapsed .navbar-nav .nav-link .sidenav-normal {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+.sidenav.collapsed .sidenav-header .navbar-brand span {
+    opacity: 0;
+    overflow: hidden;
+}
+
+/* Ensure no horizontal scroll in any sidebar state */
+.sidenav,
+.sidenav * {
+    box-sizing: border-box;
+}
