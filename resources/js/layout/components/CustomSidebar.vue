@@ -60,7 +60,12 @@
                 <hr class="horizontal light mt-0">
 
                 <template v-for="(menu, index) in menuItems">
-                    <li class="nav-item" v-if="menu.has_permission">
+                    <li class="nav-item" v-if="menu.has_permission && !menu.is_url">
+                        <hr class="horizontal light mt-2 mb-2">
+                        <span class="text-muted" style="margin-left: 2.1rem;">{{ menu.name }}</span>
+                        <hr class="horizontal light mt-2 mb-2">
+                    </li>
+                    <li class="nav-item" v-if="menu.has_permission && menu.is_url">
                         <a class="nav-link text-white"
                             :class="current_url == `${$page.props.url}/${menu.url}` ? 'bg-gradient-primary active' : ''"
                             :href="`${$page.props.url}/${menu.url}`"
@@ -101,42 +106,63 @@ let menuItems = reactive([
         name: "Dashboard",
         icon: "fa fa-th-large",
         url: "",
+        is_url : true,
         has_permission: hasPermission("view_dashboard"),
     },
     {
-        name: "Users",
-        icon: "fa fa-users",
-        url: "users/index",
-        has_permission: hasPermission("view_users"),
+        name: "Main",
+        icon: "",
+        url: "",
+        is_url : false,
+        has_permission: hasPermission("view_banks") || hasPermission("view_accounts") || hasPermission("view_income_types") || hasPermission("view_expense_types"),
     },
     {
         name: "Banks",
         icon: "fa fa-bank",
         url: "banks/index",
+        is_url : true,
         has_permission: hasPermission("view_banks"),
     },
     {
         name: "Accounts",
         icon: "fa fa-credit-card",
         url: "accounts/index",
+        is_url : true,
         has_permission: hasPermission("view_accounts"),
     },
     {
         name: "Income Types",
         icon: "fa fa-plus-circle",
         url: "income-types/index",
+        is_url : true,
         has_permission: hasPermission("view_income_types"),
     },
     {
         name: "Expense Types",
         icon: "fa fa-minus-circle",
         url: "expense-types/index",
+        is_url : true,
         has_permission: hasPermission("view_expense_types"),
+    },
+    {
+        name: "User Management",
+        icon: "",
+        url: "",
+        is_url : false,
+        has_permission: hasPermission("view_users") || hasPermission("view_permissions"),
+    },
+    {
+        name: "Users",
+        icon: "fa fa-users",
+        url: "users/index",
+        is_url : true,
+        has_permission: hasPermission("view_users"),
     },
     {
         name: "Permission",
         icon: "fa fa-shield",
         url: "permissions/index",
+        is_url : true,
         has_permission: hasPermission("view_permissions"),
     },
 ]);
