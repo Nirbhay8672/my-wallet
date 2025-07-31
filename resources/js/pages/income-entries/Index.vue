@@ -16,7 +16,7 @@
         <div class="card mb-4">
             <div class="card-body">
                 <div class="row input-group input-group-outline">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select v-model="filters.account_id" class="form-control form-control-solid form-select" @change="applyFilters">
                             <option value="">All Accounts</option>
                             <option v-for="account in accounts" :key="account.id" :value="account.id">
@@ -24,7 +24,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select v-model="filters.income_type_id" class="form-control form-control-solid form-select" @change="applyFilters">
                             <option value="">All Types</option>
                             <option v-for="type in incomeTypes" :key="type.id" :value="type.id">
@@ -32,7 +32,7 @@
                             </option>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select v-model="filters.date_range" class="form-control form-control-solid form-select" @change="applyFilters">
                             <option value="">All Time</option>
                             <option value="this_week">This Week</option>
@@ -44,7 +44,7 @@
                     <div class="col-md-3" v-if="filters.date_range === 'custom'">
                         <div class="input-group">
                             <input type="date" v-model="filters.start_date" class="form-control" @change="applyFilters">
-                            <span class="input-group-text">to</span>
+                            <span class="date-range-center">to</span>
                             <input type="date" v-model="filters.end_date" class="form-control" @change="applyFilters">
                         </div>
                     </div>
@@ -90,8 +90,7 @@
                         <tbody>
                             <tr v-for="entry in entries.data" :key="entry.id">
                                 <td style="min-width: 120px">
-                                    <div>{{ formatDate(entry.date) }}</div>
-                                    <small class="text-muted">{{ entry.time }}</small>
+                                    <div>{{ formatDate(entry.date) }} <i class="fa fa-clock-o ms-2 text-primary" style="font-size: 16px !important;"></i> <small class="text-muted">{{ entry.time }}</small></div>
                                 </td>
                                 <td style="min-width: 150px">{{ entry.title }}</td>
                                 <td style="min-width: 120px">
@@ -104,12 +103,12 @@
                                     <span class="text-success fw-bold">+₹{{ formatNumber(entry.amount) }}</span>
                                 </td>
                                 <td style="min-width: 100px">
-                                    <a v-if="entry.proof" :href="`${$page.props.url}/${entry.proof}`" target="_blank" class="btn btn-sm btn-outline-info">
+                                    <a v-if="entry.proof" :href="`${$page.props.url}/${entry.proof}`" target="_blank" class="mt-3 btn btn-sm btn-outline-info">
                                         <i class="fa fa-file me-1"></i>View
                                     </a>
                                     <span v-else class="text-muted">No proof</span>
                                 </td>
-                                <td style="min-width: 100px;" class="text-center align-middle">
+                                <td style="min-width: 100px;" class="text-center align-middle pt-4">
                                     <button class="btn btn-sm btn-primary me-2" @click="editEntry(entry)">
                                         <i class="fa fa-pencil"></i>
                                     </button>
@@ -151,7 +150,7 @@
             </div>
         </div>
 
-        <IncomeEntryForm ref="incomeEntryForm" modal-id="incomeEntryModal" :entry="selectedEntry" :is-edit="!!selectedEntry" :accounts="accounts" :income-types="incomeTypes" :url="page.props.url" @reload="handleEntrySaved" />
+        <IncomeEntryForm ref="incomeEntryForm" modal-id="incomeEntryModal" :entry="selectedEntry" :is-edit="!!selectedEntry" :accounts="accounts" :income-types="incomeTypes" :url="page.props.url" :selected-account-id="filters.account_id" @reload="handleEntrySaved" />
     </main-page>
 </template>
 

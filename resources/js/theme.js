@@ -49,7 +49,7 @@ const initialComponents = function() {
     ),
     tooltipList = tooltipTriggerList.map(function (e) {
         return new bootstrap.Tooltip(e);
-    }); 
+    });
 
     document.addEventListener('DOMContentLoaded', function () {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -392,7 +392,7 @@ let iconNavbarSidenav, iconSidenav, sidenav;
 let body, className;
 
 const sidenavbarToogleVariables = function() {
-    sidenavToggler,sidenavShow,toggleNavbarMinimize,total = document.querySelectorAll(".nav-pills");   
+    sidenavToggler,sidenavShow,toggleNavbarMinimize,total = document.querySelectorAll(".nav-pills");
 };
 
 function initNavs() {
@@ -597,7 +597,7 @@ const initSidebarToggle = function () {
     iconNavbarSidenav = document.getElementById("iconNavbarSidenav"),
         iconSidenav = document.getElementById("iconSidenav"),
         sidenav = document.getElementById("sidenav-main");
-    
+
     body = document.getElementsByTagName("body")[0],
         className = "g-sidenav-pinned";
 

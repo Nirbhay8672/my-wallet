@@ -31,9 +31,9 @@
                             no-input
                         >
                             <template #input="{ hasError }">
-                                <select 
-                                    class="form-control form-control-solid form-select" 
-                                    id="account_id" 
+                                <select
+                                    class="form-control form-control-solid form-select"
+                                    id="account_id"
                                     v-model="fields.account_id"
                                     :class="{ 'is-invalid': hasError }"
                                     required
@@ -62,9 +62,9 @@
                             no-input
                         >
                             <template #input="{ hasError }">
-                                <select 
-                                    class="form-control form-control-solid form-select" 
-                                    id="expense_type_id" 
+                                <select
+                                    class="form-control form-control-solid form-select"
+                                    id="expense_type_id"
                                     v-model="fields.expense_type_id"
                                     :class="{ 'is-invalid': hasError }"
                                     required
@@ -107,7 +107,6 @@
                             id="date"
                             field="date"
                             :errors="formValidation.errors"
-                            :max="maxDate"
                         ></Field>
                     </div>
                 </div>
@@ -121,7 +120,6 @@
                             id="time"
                             field="time"
                             :errors="formValidation.errors"
-                            :max="maxTime"
                         ></Field>
                     </div>
                 </div>
@@ -137,20 +135,29 @@
                     no-input
                 >
                     <template #input="{ hasError }">
-                        <div class="file-upload-wrapper">
-                            <input 
-                                type="file" 
-                                class="form-control" 
-                                id="proof" 
-                                @change="handleFileUpload"
-                                :class="{ 'is-invalid': hasError }"
-                                accept=".jpg,.jpeg,.png,.pdf"
-                            >
-                            <div class="form-text mt-1">Allowed file types: JPG, PNG, PDF (Max: 2MB)</div>
-                            <div v-if="fields.proof && !isFileUpload" class="mt-2">
-                                <a :href="`${url}/${fields.proof}`" target="_blank" class="btn btn-sm btn-outline-info">
-                                    <i class="fa fa-file me-1"></i>View Current Proof
-                                </a>
+                        <div class="custom-file-upload">
+                            <div class="file-upload-area" :class="{ 'is-invalid': hasError }" @click="triggerFileInput">
+                                <input
+                                    ref="fileInput"
+                                    type="file"
+                                    class="file-input"
+                                    id="proof"
+                                    @change="handleFileUpload"
+                                    accept=".jpg,.jpeg,.png,.pdf"
+                                >
+                                <div class="upload-content">
+                                    <i class="fa fa-cloud-upload fa-2x text-primary mb-2"></i>
+                                    <h5 class="upload-title">Upload any proof</h5>
+                                    <p class="upload-text">Click to browse files</p>
+                                    <p class="upload-info">Allowed file types: JPG, PNG, PDF (Max: 2MB)</p>
+                                </div>
+                                <div v-if="selectedFileName" class="selected-file">
+                                    <i class="fa fa-file text-success me-2"></i>
+                                    <span>{{ selectedFileName }}</span>
+                                </div>
+                            </div>
+                            <div v-if="hasError" class="invalid-feedback d-block">
+                                {{ formValidation.getError("proof")[0] }}
                             </div>
                         </div>
                     </template>
@@ -219,6 +226,10 @@ const props = defineProps({
     url: {
         type: String,
         required: true
+    },
+    selectedAccountId: {
+        type: [String, Number],
+        default: null
     }
 });
 
@@ -238,24 +249,10 @@ let fields = reactive({
 });
 
 let isFileUpload = ref(false);
+let selectedFileName = ref("");
+let fileInput = ref(null);
 
-// Computed properties for date/time validation
-const maxDate = computed(() => {
-    return new Date().toISOString().split('T')[0];
-});
 
-const maxTime = computed(() => {
-    const now = new Date();
-    const currentTime = now.toTimeString().slice(0, 5);
-    
-    // If date is today, restrict time to current time or earlier
-    if (fields.date === maxDate.value) {
-        return currentTime;
-    }
-    
-    // If date is in the past, allow any time
-    return "23:59";
-});
 
 function openModal(entry) {
     // Reset form validation errors
@@ -276,10 +273,21 @@ function openModal(entry) {
         fields.proof_path = entry.proof;
         fields.proof = null;
         isFileUpload.value = false;
+        selectedFileName.value = "";
+
+        // Ensure date is properly formatted for the input
+        if (entry.date) {
+            fields.date = new Date(entry.date).toISOString().split('T')[0];
+        }
     } else {
         // Set default values for new entry
         fields.date = new Date().toISOString().split('T')[0];
         fields.time = new Date().toTimeString().slice(0, 5);
+
+        // Auto-select account if provided
+        if (props.selectedAccountId) {
+            fields.account_id = props.selectedAccountId;
+        }
     }
 
     // Open modal (Bootstrap)
@@ -301,6 +309,7 @@ function handleFileUpload(event) {
                 icon: "error"
             });
             event.target.value = "";
+            selectedFileName.value = "";
             return;
         }
 
@@ -312,12 +321,14 @@ function handleFileUpload(event) {
                 icon: "error"
             });
             event.target.value = "";
+            selectedFileName.value = "";
             return;
         }
 
         fields.proof_path = file.name;
         fields.proof = file;
         isFileUpload.value = true;
+        selectedFileName.value = file.name;
 
         // Clear any validation errors for proof
         formValidation.clearError('proof');
@@ -330,6 +341,7 @@ function clearFormData() {
     fields.proof_path = "";
     fields.proof = null;
     isFileUpload.value = false;
+    selectedFileName.value = "";
 
     // Clear file input
     const fileInput = document.getElementById("proof");
@@ -341,32 +353,7 @@ function clearFormData() {
 function handleSubmit() {
     formValidation.validate();
 
-    // Additional validation for date and time
-    const selectedDate = new Date(fields.date);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    if (selectedDate > today) {
-        toastAlert({
-            title: "Date cannot be in the future. Please select today or a past date.",
-            icon: "error"
-        });
-        return;
-    }
 
-    // Validate time if date is today
-    if (fields.date === maxDate.value) {
-        const selectedTime = fields.time;
-        const currentTime = new Date().toTimeString().slice(0, 5);
-        
-        if (selectedTime > currentTime) {
-            toastAlert({
-                title: "Time cannot be in the future. Please select current time or earlier.",
-                icon: "error"
-            });
-            return;
-        }
-    }
 
     // Validate amount
     if (parseFloat(fields.amount) <= 0) {
@@ -431,6 +418,12 @@ function handleSubmit() {
     }
 }
 
+function triggerFileInput() {
+    if (fileInput.value) {
+        fileInput.value.click();
+    }
+}
+
 function handleClose() {
     clearFormData();
 }
@@ -477,23 +470,89 @@ let formValidation = reactive(
 </script>
 
 <style scoped>
-.file-upload-wrapper {
+.custom-file-upload {
+    width: 100%;
+}
+
+.file-upload-area {
     position: relative;
+    width: 100%;
+    min-height: 120px;
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.file-upload-wrapper input[type="file"] {
-    padding: 0.5rem;
-    border: 1px solid #d1d5db;
-    border-radius: 0.375rem;
-    background-color: #fff;
-}
-
-.file-upload-wrapper input[type="file"]:focus {
+.file-upload-area:hover {
     border-color: #3b82f6;
-    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+    background-color: #f0f8ff;
 }
 
-.file-upload-wrapper input[type="file"].is-invalid {
+.file-upload-area.is-invalid {
     border-color: #dc3545;
+    background-color: #fff5f5;
 }
-</style> 
+
+.file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.upload-content {
+    text-align: center;
+    padding: 20px;
+    pointer-events: none;
+}
+
+.upload-title {
+    margin: 0;
+    color: #374151;
+    font-weight: 600;
+}
+
+.upload-text {
+    margin: 5px 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.upload-info {
+    margin: 5px 0 0 0;
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.selected-file {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid #22c55e;
+    border-radius: 4px;
+    padding: 8px 12px;
+    color: #15803d;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+</style>

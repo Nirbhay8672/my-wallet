@@ -288,3 +288,12 @@
 .sidenav * {
     box-sizing: border-box;
 }
+
+.date-range-center {
+    text-align: center;
+    padding:6px;
+    background-color: #e91e63;
+    color: #fff;
+    width: 45px;
+    border-radius: 5px !important;
+}

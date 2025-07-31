@@ -93,9 +93,22 @@ class IncomeEntryController extends Controller
             'amount' => 'required|numeric|min:0.01|gt:0',
             'proof' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
             'description' => 'nullable|string',
-            'date' => 'required|date|before_or_equal:today',
+            'date' => 'required|date',
             'time' => 'required',
         ]);
+
+        // Custom validation for date to allow today's date
+        $selectedDate = \Carbon\Carbon::parse($request->date);
+        $today = \Carbon\Carbon::today();
+
+        if ($selectedDate->gt($today)) {
+            return response()->json([
+                'message' => 'Date cannot be in the future.',
+                'errors' => [
+                    'date' => ['Date cannot be in the future.']
+                ]
+            ], 422);
+        }
 
         DB::beginTransaction();
         try {
@@ -155,9 +168,22 @@ class IncomeEntryController extends Controller
             'amount' => 'required|numeric|min:0.01|gt:0',
             'proof' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
             'description' => 'nullable|string',
-            'date' => 'required|date|before_or_equal:today',
+            'date' => 'required|date',
             'time' => 'required',
         ]);
+
+        // Custom validation for date to allow today's date
+        $selectedDate = \Carbon\Carbon::parse($request->date);
+        $today = \Carbon\Carbon::today();
+
+        if ($selectedDate->gt($today)) {
+            return response()->json([
+                'message' => 'Date cannot be in the future.',
+                'errors' => [
+                    'date' => ['Date cannot be in the future.']
+                ]
+            ], 422);
+        }
 
         DB::beginTransaction();
         try {

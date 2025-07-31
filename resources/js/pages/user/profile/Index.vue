@@ -9,11 +9,11 @@
         <div class="card card-body mx-3 mx-md-4 mt-n6">
             <div class="row gx-4 mb-2">
                 <div class="col-auto">
-                    <div class="avatar avatar-xl position-relative">
+                    <div class="position-relative">
                         <img :src="user_data.profile_path
                             ? user_data.profile_path
                             : '/images/profile.png'
-                            " alt="profile_image" class="w-100 border-radius-lg">
+                            " alt="profile_image" style="height: 80px !important;width:80px !important;border-radius: 50%;">
                     </div>
                 </div>
                 <div class="col-auto my-auto">

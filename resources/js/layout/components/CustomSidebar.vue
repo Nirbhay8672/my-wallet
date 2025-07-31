@@ -110,13 +110,6 @@ let menuItems = reactive([
         has_permission: hasPermission("view_dashboard"),
     },
     {
-        name: "Main",
-        icon: "",
-        url: "",
-        is_url : false,
-        has_permission: hasPermission("view_banks") || hasPermission("view_accounts") || hasPermission("view_income_types") || hasPermission("view_expense_types"),
-    },
-    {
         name: "Banks",
         icon: "fa fa-bank",
         url: "banks/index",
@@ -143,13 +136,6 @@ let menuItems = reactive([
         url: "expense-types/index",
         is_url : true,
         has_permission: hasPermission("view_expense_types"),
-    },
-    {
-        name: "User Management",
-        icon: "",
-        url: "",
-        is_url : false,
-        has_permission: hasPermission("view_users") || hasPermission("view_permissions"),
     },
     {
         name: "Users",
