@@ -116,6 +116,12 @@ let menuItems = reactive([
         has_permission: hasPermission("view_banks"),
     },
     {
+        name: "Accounts",
+        icon: "fa fa-credit-card",
+        url: "accounts/index",
+        has_permission: hasPermission("view_accounts"),
+    },
+    {
         name: "Permission",
         icon: "fa fa-shield",
         url: "permissions/index",

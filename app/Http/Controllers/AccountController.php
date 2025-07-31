@@ -19,6 +19,9 @@ class AccountController extends Controller
             'accounts' => $accounts,
             'banks' => $banks,
             'page_name' => 'Accounts',
+            'auth' => [
+                'user' => Auth::user()->load(['roles.permissions'])
+            ],
         ]);
     }
 
@@ -33,8 +36,8 @@ class AccountController extends Controller
         $validated['type'] = $validated['bank_id'] ? 'bank' : 'cash';
         $validated['balance'] = $validated['initial_amount'];
         $validated['user_id'] = Auth::id();
-        Account::create($validated);
-        return redirect()->route('accounts.account_index')->with('success', 'Account created successfully.');
+        $account = Account::create($validated);
+        return $this->successResponse(message: "{$account->name} account has been created successfully.");
     }
 
     public function update(Request $request, Account $account)
@@ -58,15 +61,15 @@ class AccountController extends Controller
             ]);
             $account->update($validated);
         }
-        return redirect()->route('accounts.account_index')->with('success', 'Account updated successfully.');
+        return $this->successResponse(message: "{$account->name} account has been updated successfully.");
     }
 
     public function destroy(Account $account)
     {
         if ($account->type === 'cash') {
-            return redirect()->route('accounts.account_index')->with('error', 'Cash account cannot be deleted.');
+            return redirect()->route('accounts.index')->with('error', 'Cash account cannot be deleted.');
         }
         $account->delete();
-        return redirect()->route('accounts.account_index')->with('success', 'Account deleted successfully.');
+        return redirect()->route('accounts.index')->with('success', 'Account deleted successfully.');
     }
-} 
+}

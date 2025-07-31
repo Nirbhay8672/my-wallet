@@ -42,6 +42,14 @@ class User extends Authenticatable
         'active' => 'boolean',
     ];
 
+    /**
+     * Get the accounts for the user.
+     */
+    public function accounts()
+    {
+        return $this->hasMany(Account::class);
+    }
+
     protected function google2faSecret(): Attribute
     {
         return new Attribute(

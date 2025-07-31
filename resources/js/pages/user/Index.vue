@@ -27,7 +27,7 @@
                             style="height: 200px"
                             v-if="loader"
                         >
-                            <div class="pre-loader">
+                            <div class="pre-loader" v-if="loader">
                                 <div class="circle-line">
                                     <img
                                         class="loader-icon-image circle-one"

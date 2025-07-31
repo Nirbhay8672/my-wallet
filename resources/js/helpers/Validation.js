@@ -228,6 +228,12 @@ class FormValidation {
         return "";
     }
 
+    clearError(key) {
+        if (this.hasError(key)) {
+            delete this.errors[key];
+        }
+    }
+
     hasField = function (key) {
         return this.rules.hasOwnProperty(key);
     };

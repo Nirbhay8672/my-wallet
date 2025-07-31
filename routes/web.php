@@ -1,12 +1,7 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\SourceController;
-use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\AccountController;
@@ -72,9 +67,9 @@ Route::prefix('banks')->as('banks.')->middleware(['auth'])->group(function () {
 });
 
 // Account routes
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index')->middleware('permission:view_accounts');
-    Route::post('/accounts', [AccountController::class, 'store'])->name('accounts.store')->middleware('permission:add_account');
-    Route::put('/accounts/{account}', [AccountController::class, 'update'])->name('accounts.update')->middleware('permission:edit_account');
-    Route::delete('/accounts/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy')->middleware('permission:delete_account');
+Route::prefix('accounts')->as('accounts.')->middleware(['auth'])->group(function () {
+    Route::get('/index', [AccountController::class, 'index'])->name('index')->middleware('permission:view_accounts');
+    Route::post('/store', [AccountController::class, 'store'])->name('store')->middleware('permission:add_account');
+    Route::post('/update/{account}', [AccountController::class, 'update'])->name('update')->middleware('permission:edit_account');
+    Route::delete('/delete/{account}', [AccountController::class, 'destroy'])->name('destroy')->middleware('permission:delete_account');
 });
