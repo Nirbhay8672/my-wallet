@@ -33,7 +33,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form method="POST" action="{{ route('login') }}" role="form" class="text-start">
+                                <form method="POST" action="{{ route('login') }}" role="form" class="text-start" id="login-form">
                                 @csrf
                                     <div class="input-group input-group-outline my-3">
                                         <input
@@ -76,6 +76,23 @@
                                     <div class="text-center">
                                         <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">{{ __('Login') }}</button>
                                     </div>
+
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <button
+                                            class="btn btn-lg btn-info btn-sm"
+                                            type="button"
+                                            onclick="loginWith('admin@gmail.com', '123123')"
+                                        >
+                                            Admin Login
+                                        </button>
+                                        <button
+                                            class="btn btn-lg btn-secondary btn-sm"
+                                            type="button"
+                                            onclick="loginWith('user@gmail.com', '123123')"
+                                        >
+                                            User Login
+                                        </button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -92,6 +109,12 @@
             } else {
                 x.type = "password";
             }
+        }
+
+        function loginWith(email, password) {
+            document.getElementById('email').value = email;
+            document.getElementById('password').value = password;
+            document.getElementById('login-form').submit();
         }
     </script>
 </body>

@@ -3,7 +3,6 @@
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SourceController;
@@ -27,13 +26,11 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('auth/google', [LoginController::class, 'redirectToGoogle']);
-Route::get('auth/google/callback', [LoginController::class, 'handleGoogleCallback']);
-
-Route::get('/complete-registration', [RegisterController::class, 'completeRegistration'])->name('complete.registration');
-
 Route::middleware(['auth'])->group(function () {
-    Route::get('/logout-auth', [LoginController::class, 'logOut']);
+    Route::get('/logout-auth', function() {
+        Auth::logout();
+        return redirect('/login');
+    });
 });
 
 // Route::middleware(['2fa', 'auth'])->group(function () {
