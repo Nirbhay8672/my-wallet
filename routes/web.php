@@ -5,6 +5,9 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\IncomeTypeController;
+use App\Http\Controllers\ExpenseTypeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +30,8 @@ Route::middleware(['auth'])->group(function () {
         return redirect('/login');
     });
 });
+
+Route::get('/complete-registration', [RegisterController::class, 'completeRegistration'])->name('complete.registration');
 
 // Route::middleware(['2fa', 'auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
@@ -64,6 +69,24 @@ Route::prefix('banks')->as('banks.')->middleware(['auth'])->group(function () {
     Route::post('/update/{bank}', [BankController::class, 'update'])->middleware(['permission:edit_bank'])->name('update');
     Route::post('/{bank}/toggle-status', [BankController::class, 'toggleStatus'])->middleware(['permission:edit_bank'])->name('toggle_status');
     Route::get('/delete/{bank}', [BankController::class, 'destroy'])->middleware(['permission:delete_bank'])->name('delete');
+});
+
+// income-types url
+Route::prefix('income-types')->as('income-types.')->middleware(['auth'])->group(function () {
+    Route::get('/index', [IncomeTypeController::class, 'index'])->middleware(['permission:view_income_types'])->name('index');
+    Route::post('/create', [IncomeTypeController::class, 'store'])->middleware(['permission:add_income_type'])->name('create');
+    Route::post('/update/{incomeType}', [IncomeTypeController::class, 'update'])->middleware(['permission:edit_income_type'])->name('update');
+    Route::post('/{incomeType}/toggle-status', [IncomeTypeController::class, 'toggleStatus'])->middleware(['permission:edit_income_type'])->name('toggle_status');
+    Route::get('/delete/{incomeType}', [IncomeTypeController::class, 'destroy'])->middleware(['permission:delete_income_type'])->name('delete');
+});
+
+// expense-types url
+Route::prefix('expense-types')->as('expense-types.')->middleware(['auth'])->group(function () {
+    Route::get('/index', [ExpenseTypeController::class, 'index'])->middleware(['permission:view_expense_types'])->name('index');
+    Route::post('/create', [ExpenseTypeController::class, 'store'])->middleware(['permission:add_expense_type'])->name('create');
+    Route::post('/update/{expenseType}', [ExpenseTypeController::class, 'update'])->middleware(['permission:edit_expense_type'])->name('update');
+    Route::post('/{expenseType}/toggle-status', [ExpenseTypeController::class, 'toggleStatus'])->middleware(['permission:edit_expense_type'])->name('toggle_status');
+    Route::get('/delete/{expenseType}', [ExpenseTypeController::class, 'destroy'])->middleware(['permission:delete_expense_type'])->name('delete');
 });
 
 // Account routes

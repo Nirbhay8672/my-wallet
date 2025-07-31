@@ -50,11 +50,23 @@ class UserSeeder extends Seeder
             ['display_name' => 'Edit Bank', 'name' => 'edit_bank', 'category' => 'Bank', 'guard_name' => 'web'],
             ['display_name' => 'Delete Bank', 'name' => 'delete_bank', 'category' => 'Bank', 'guard_name' => 'web'],
 
-            // banks
+            // accounts
             ['display_name' => 'View Accounts', 'name' => 'view_accounts', 'category' => 'Account', 'guard_name' => 'web'],
             ['display_name' => 'Add Account', 'name' => 'add_account', 'category' => 'Account', 'guard_name' => 'web'],
             ['display_name' => 'Edit Account', 'name' => 'edit_account', 'category' => 'Account', 'guard_name' => 'web'],
             ['display_name' => 'Delete Account', 'name' => 'delete_account', 'category' => 'Account', 'guard_name' => 'web'],
+
+            // income types
+            ['display_name' => 'View Income Types', 'name' => 'view_income_types', 'category' => 'Income Type', 'guard_name' => 'web'],
+            ['display_name' => 'Add Income Type', 'name' => 'add_income_type', 'category' => 'Income Type', 'guard_name' => 'web'],
+            ['display_name' => 'Edit Income Type', 'name' => 'edit_income_type', 'category' => 'Income Type', 'guard_name' => 'web'],
+            ['display_name' => 'Delete Income Type', 'name' => 'delete_income_type', 'category' => 'Income Type', 'guard_name' => 'web'],
+
+            // expense types
+            ['display_name' => 'View Expense Types', 'name' => 'view_expense_types', 'category' => 'Expense Type', 'guard_name' => 'web'],
+            ['display_name' => 'Add Expense Type', 'name' => 'add_expense_type', 'category' => 'Expense Type', 'guard_name' => 'web'],
+            ['display_name' => 'Edit Expense Type', 'name' => 'edit_expense_type', 'category' => 'Expense Type', 'guard_name' => 'web'],
+            ['display_name' => 'Delete Expense Type', 'name' => 'delete_expense_type', 'category' => 'Expense Type', 'guard_name' => 'web'],
         ];
 
         DB::table('permissions')->insert($permissions_array);
@@ -93,10 +105,6 @@ class UserSeeder extends Seeder
             'add_account',
             'edit_account',
             'delete_account',
-            'view_banks',
-            'add_bank',
-            'edit_bank',
-            'delete_bank',
         ];
 
         // user role

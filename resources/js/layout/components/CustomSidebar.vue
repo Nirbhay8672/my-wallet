@@ -122,6 +122,18 @@ let menuItems = reactive([
         has_permission: hasPermission("view_accounts"),
     },
     {
+        name: "Income Types",
+        icon: "fa fa-plus-circle",
+        url: "income-types/index",
+        has_permission: hasPermission("view_income_types"),
+    },
+    {
+        name: "Expense Types",
+        icon: "fa fa-minus-circle",
+        url: "expense-types/index",
+        has_permission: hasPermission("view_expense_types"),
+    },
+    {
         name: "Permission",
         icon: "fa fa-shield",
         url: "permissions/index",
