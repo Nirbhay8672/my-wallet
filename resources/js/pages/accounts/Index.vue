@@ -46,14 +46,24 @@
                             <small class="text-muted">A/C: {{ account.account_number }}</small>
                         </p>
                         <div class="mt-3">
-                            <button class="btn btn-sm btn-info me-2" @click="openModal(account)"
-                                v-if="hasPermission('edit_account')">
-                                <i class="fa fa-edit me-1"></i>Edit
-                            </button>
-                            <button v-if="account.type === 'bank' && hasPermission('delete_account')"
-                                class="btn btn-sm btn-danger" @click="deleteAccount(account)">
-                                <i class="fa fa-trash me-1"></i>Delete
-                            </button>
+                            <div class="btn-group mb-2" role="group">
+                                <button class="btn btn-sm btn-success me-1" @click="viewIncomeEntries(account)">
+                                    <i class="fa fa-plus-circle me-1"></i>Income
+                                </button>
+                                <button class="btn btn-sm btn-danger me-1" @click="viewExpenseEntries(account)">
+                                    <i class="fa fa-minus-circle me-1"></i>Expense
+                                </button>
+                            </div>
+                            <div class="mt-2">
+                                <button class="btn btn-sm btn-info me-2" @click="openModal(account)"
+                                    v-if="hasPermission('edit_account')">
+                                    <i class="fa fa-edit me-1"></i>Edit
+                                </button>
+                                <button v-if="account.type === 'bank' && hasPermission('delete_account')"
+                                    class="btn btn-sm btn-danger" @click="deleteAccount(account)">
+                                    <i class="fa fa-trash me-1"></i>Delete
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -124,6 +134,14 @@ function openModal(account = null) {
     } else {
         console.log('Form ref not found');
     }
+}
+
+function viewIncomeEntries(account) {
+    router.get('/income-entries/index', { account_id: account.id, type: 'income' });
+}
+
+function viewExpenseEntries(account) {
+    router.get('/expense-entries/index', { account_id: account.id, type: 'expense' });
 }
 
 function reloadData() {

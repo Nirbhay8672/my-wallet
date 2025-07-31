@@ -21,4 +21,14 @@ class Account extends Model
     {
         return $this->belongsTo(Bank::class);
     }
+
+    public function incomeEntries()
+    {
+        return $this->hasMany(IncomeEntry::class);
+    }
+
+    public function expenseEntries()
+    {
+        return $this->hasMany(ExpenseEntry::class);
+    }
 } 

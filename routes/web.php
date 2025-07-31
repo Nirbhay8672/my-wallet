@@ -5,6 +5,8 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\IncomeEntryController;
+use App\Http\Controllers\ExpenseEntryController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\IncomeTypeController;
 use App\Http\Controllers\ExpenseTypeController;
@@ -95,4 +97,20 @@ Route::prefix('accounts')->as('accounts.')->middleware(['auth'])->group(function
     Route::post('/store', [AccountController::class, 'store'])->name('store')->middleware('permission:add_account');
     Route::post('/update/{account}', [AccountController::class, 'update'])->name('update')->middleware('permission:edit_account');
     Route::delete('/delete/{account}', [AccountController::class, 'destroy'])->name('destroy')->middleware('permission:delete_account');
+});
+
+// Income entries routes
+Route::prefix('income-entries')->as('income-entries.')->middleware(['auth'])->group(function () {
+    Route::get('/index', [IncomeEntryController::class, 'index'])->name('index');
+    Route::post('/create', [IncomeEntryController::class, 'store'])->name('create');
+    Route::post('/update/{incomeEntry}', [IncomeEntryController::class, 'update'])->name('update');
+    Route::get('/delete/{incomeEntry}', [IncomeEntryController::class, 'destroy'])->name('delete');
+});
+
+// Expense entries routes
+Route::prefix('expense-entries')->as('expense-entries.')->middleware(['auth'])->group(function () {
+    Route::get('/index', [ExpenseEntryController::class, 'index'])->name('index');
+    Route::post('/create', [ExpenseEntryController::class, 'store'])->name('create');
+    Route::post('/update/{expenseEntry}', [ExpenseEntryController::class, 'update'])->name('update');
+    Route::get('/delete/{expenseEntry}', [ExpenseEntryController::class, 'destroy'])->name('delete');
 });
