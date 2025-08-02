@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth' , '2fa'])->group(function () {
     Route::get('/logout-auth', function() {
         Auth::logout();
         return redirect('/login');
@@ -36,7 +36,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/complete-registration', [RegisterController::class, 'completeRegistration'])->name('complete.registration');
 
 // Route::middleware(['2fa', 'auth'])->group(function () {
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth' , '2fa'])->group(function () {
     Route::get('', [DashboardController::class, 'index'])->name('home');
 
     Route::post('/2fa', function () {
@@ -45,7 +45,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // users url
-Route::prefix('users')->as('users.')->middleware(['auth'])->group(function () {
+Route::prefix('users')->as('users.')->middleware(['auth' , '2fa'])->group(function () {
     Route::get('/index', [UserController::class, 'index'])->middleware(['permission:view_users'])->name('user_index');
     Route::post('/datatable', [UserController::class, 'datatable'])->middleware(['permission:view_users'])->name('user_datatable');
     Route::post('/create-or-update/{user?}', [UserController::class, 'createOrUpdate'])->middleware(['permission:add_user'])->name('create_or_update');
@@ -57,14 +57,14 @@ Route::prefix('users')->as('users.')->middleware(['auth'])->group(function () {
 });
 
 // permissions url
-Route::prefix('permissions')->as('permissions.')->middleware(['auth'])->group(function () {
+Route::prefix('permissions')->as('permissions.')->middleware(['auth' , '2fa'])->group(function () {
     Route::get('/index', [PermissionController::class, 'index'])->middleware(['permission:view_permissions'])->name('permissions_index');
     Route::get('/get-role-permissions', [PermissionController::class, 'rolePermission'])->middleware(['permission:view_permissions'])->name('get_role_permission');
     Route::post('/update-role-permissions', [PermissionController::class, 'assignPermissionsByRoles'])->middleware(['permission:view_permissions'])->name('update_role_permission');
 });
 
 // banks url
-Route::prefix('banks')->as('banks.')->middleware(['auth'])->group(function () {
+Route::prefix('banks')->as('banks.')->middleware(['auth' , '2fa'])->group(function () {
     Route::get('/index', [BankController::class, 'index'])->middleware(['permission:view_banks'])->name('index');
     Route::post('/datatable', [BankController::class, 'datatable'])->middleware(['permission:view_banks'])->name('datatable');
     Route::post('/create', [BankController::class, 'store'])->middleware(['permission:add_bank'])->name('create');
@@ -74,7 +74,7 @@ Route::prefix('banks')->as('banks.')->middleware(['auth'])->group(function () {
 });
 
 // income-types url
-Route::prefix('income-types')->as('income-types.')->middleware(['auth'])->group(function () {
+Route::prefix('income-types')->as('income-types.')->middleware(['auth' , '2fa'])->group(function () {
     Route::get('/index', [IncomeTypeController::class, 'index'])->middleware(['permission:view_income_types'])->name('index');
     Route::post('/create', [IncomeTypeController::class, 'store'])->middleware(['permission:add_income_type'])->name('create');
     Route::post('/update/{incomeType}', [IncomeTypeController::class, 'update'])->middleware(['permission:edit_income_type'])->name('update');
@@ -83,7 +83,7 @@ Route::prefix('income-types')->as('income-types.')->middleware(['auth'])->group(
 });
 
 // expense-types url
-Route::prefix('expense-types')->as('expense-types.')->middleware(['auth'])->group(function () {
+Route::prefix('expense-types')->as('expense-types.')->middleware(['auth' , '2fa'])->group(function () {
     Route::get('/index', [ExpenseTypeController::class, 'index'])->middleware(['permission:view_expense_types'])->name('index');
     Route::post('/create', [ExpenseTypeController::class, 'store'])->middleware(['permission:add_expense_type'])->name('create');
     Route::post('/update/{expenseType}', [ExpenseTypeController::class, 'update'])->middleware(['permission:edit_expense_type'])->name('update');
@@ -92,7 +92,7 @@ Route::prefix('expense-types')->as('expense-types.')->middleware(['auth'])->grou
 });
 
 // Account routes
-Route::prefix('accounts')->as('accounts.')->middleware(['auth'])->group(function () {
+Route::prefix('accounts')->as('accounts.')->middleware(['auth' , '2fa'])->group(function () {
     Route::get('/index', [AccountController::class, 'index'])->name('index')->middleware('permission:view_accounts');
     Route::post('/store', [AccountController::class, 'store'])->name('store')->middleware('permission:add_account');
     Route::post('/update/{account}', [AccountController::class, 'update'])->name('update')->middleware('permission:edit_account');
@@ -100,7 +100,7 @@ Route::prefix('accounts')->as('accounts.')->middleware(['auth'])->group(function
 });
 
 // Income entries routes
-Route::prefix('income-entries')->as('income-entries.')->middleware(['auth'])->group(function () {
+Route::prefix('income-entries')->as('income-entries.')->middleware(['auth' , '2fa'])->group(function () {
     Route::get('/index', [IncomeEntryController::class, 'index'])->name('index');
     Route::post('/create', [IncomeEntryController::class, 'store'])->name('create');
     Route::post('/update/{incomeEntry}', [IncomeEntryController::class, 'update'])->name('update');
@@ -108,7 +108,7 @@ Route::prefix('income-entries')->as('income-entries.')->middleware(['auth'])->gr
 });
 
 // Expense entries routes
-Route::prefix('expense-entries')->as('expense-entries.')->middleware(['auth'])->group(function () {
+Route::prefix('expense-entries')->as('expense-entries.')->middleware(['auth' , '2fa'])->group(function () {
     Route::get('/index', [ExpenseEntryController::class, 'index'])->name('index');
     Route::post('/create', [ExpenseEntryController::class, 'store'])->name('create');
     Route::post('/update/{expenseEntry}', [ExpenseEntryController::class, 'update'])->name('update');
